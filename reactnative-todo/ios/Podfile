@@ -7,6 +7,7 @@ target 'reactnativetodo' do
   config = use_native_modules!
 
   pod 'FRAuth'
+  pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
 
   use_react_native!(
     :path => config[:reactNativePath],

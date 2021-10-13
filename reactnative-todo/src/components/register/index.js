@@ -1,0 +1,1 @@
+export { RegisterContainer } from './register';

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+   FRAuthConfig.plist
+   reactnativetodo
+
+   Created by Justin Lowery on 10/12/21.
+   Copyright (c) 2021 ___ORGANIZATIONNAME___. All rights reserved.
+-->
+<plist version="1.0">
+<dict>
+	<key>forgerock_cookie_name</key>
+	<string>FRAuthConfig</string>
+	<key>forgerock_enable_cookie</key>
+	<true/>
+	<key>forgerock_oauth_client_id</key>
+	<string>WebOAuthClient</string>
+	<key>forgerock_oauth_redirect_uri</key>
+	<string>frauth://org.reactjs.native.example.reactnativetodo</string>
+	<key>forgerock_oauth_scope</key>
+	<string>openid profile email address</string>
+	<key>forgerock_oauth_url</key>
+	<string>https://forgerock.crbrl.io/am</string>
+	<key>forgerock_oauth_threshold</key>
+	<string>60</string>
+	<key>forgerock_url</key>
+	<string>https://forgerock.crbrl.io/am</string>
+	<key>forgerock_realm</key>
+	<string>alpha</string>
+	<key>forgerock_timeout</key>
+	<string>60</string>
+	<key>forgerock_keychain_access_group</key>
+	<string>org.reactjs.native.example.reactnativetodo</string>
+	<key>forgerock_auth_service_name</key>
+	<string>Login</string>
+	<key>forgerock_registration_service_name</key>
+	<string>Registration</string>
+</dict>
+</plist>

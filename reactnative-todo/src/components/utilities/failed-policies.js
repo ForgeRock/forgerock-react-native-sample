@@ -1,16 +1,17 @@
-function handleFailedPolicies(output = []) {
-  const failedPolicies =
-    output.find((val) => val.name === 'failedPolicies')?.value ?? [];
+function handleFailedPolicies(failedPolicies = []) {
+  if (!Array.isArray(failedPolicies)) return '';
   if (failedPolicies?.length) {
     const validationFailure = failedPolicies.reduce((prev, curr) => {
       let failureObj;
       try {
         failureObj = JSON.parse(curr);
       } catch (err) {
-        console.log(`Parsing failure for ${textInputLabel}`);
+        console.log(`Parsing failure for ${err.message}`);
       }
-      console.log(failureObj);
       switch (failureObj.policyRequirement) {
+        case 'REQUIRED':
+          prev = `This field is required`;
+          break;
         case 'VALID_USERNAME':
           prev = `Please choose a different username. `;
           break;

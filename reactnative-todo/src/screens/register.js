@@ -9,28 +9,6 @@ const { FRAuthBridge } = NativeModules;
 function Register({ navigation }) {
   const [data, setStep] = useState(null);
   const [loading, setLoading] = useState(true);
-  function setResponse(response) {
-    console.log(response);
-    if (response.sessionToken) {
-      const newData = {
-        ...response,
-        sessionToken: JSON.parse(response.sessionToken),
-      };
-      setData(newData);
-      return newData;
-    }
-    if (response.callbacks) {
-      const newData = {
-        ...response,
-        callbacks: response.callbacks.map((res) => ({
-          ...res,
-          response: JSON.parse(res.response),
-        })),
-      };
-      setData(newData);
-      return newData;
-    }
-  }
   useEffect(() => {
     async function start() {
       try {
@@ -54,7 +32,7 @@ function Register({ navigation }) {
     <RegisterContainer
       navigation={navigation}
       data={data}
-      setStep={setResponse}
+      setStep={setStep}
       setLoading={setLoading}
       navigation={navigation}
     />

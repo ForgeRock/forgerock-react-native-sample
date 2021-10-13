@@ -6,6 +6,7 @@ import { Header } from './header';
 import { Loading } from '../utilities/loading';
 import { callbackTypeToComponent } from '../utilities/callback-map';
 import { AppContext } from '../../global-state';
+import { FRStep } from '@forgerock/javascript-sdk';
 
 const { FRAuthBridge } = NativeModules;
 
@@ -21,6 +22,9 @@ function RegisterContainer({ setStep, data, navigation, setLoading, loading }) {
         setStep(response);
         navigation.navigate('Home');
       } else {
+        const data = JSON.parse(response);
+        const step = new FRStep(data);
+        setStep(step);
         setAuthentication(false);
         setLoading(false);
       }

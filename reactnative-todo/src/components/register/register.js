@@ -32,7 +32,7 @@ function RegisterContainer({ setStep, data, navigation, setLoading, loading }) {
       console.log('err', err, err.message);
     }
   };
-
+  console.log(data);
   return loading ? (
     <Loading message={'Checking your session'} />
   ) : (

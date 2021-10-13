@@ -6,6 +6,7 @@ const Username = ({ callback }) => {
   const error = handleFailedPolicies(
     callback.getFailedPolicies ? callback.getFailedPolicies() : [],
   );
+
   const required = (callback.isRequired && callback.isRequired()) || false;
   const label = callback.getPrompt();
   const setUsername = (text) => callback.setName(text);

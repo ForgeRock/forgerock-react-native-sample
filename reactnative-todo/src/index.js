@@ -1,9 +1,9 @@
-import React, {useEffect} from 'react';
-import {NativeModules} from 'react-native';
-import {SafeAreaProvider} from 'react-native-safe-area-context';
+import React, { useEffect } from 'react';
+import { NativeModules } from 'react-native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import Navigation from './navigation';
 
-const {FRAuthBridge} = NativeModules;
+const { FRAuthBridge } = NativeModules;
 
 export default function App() {
   useEffect(() => {

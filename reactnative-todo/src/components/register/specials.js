@@ -23,7 +23,9 @@ function TermsModal({ terms, showModal, setModal }) {
 const Specials = ({ callback }) => {
   const [checked, setChecked] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const error = '';
+  const error = handleFailedPolicies(
+    callback.getPolicies ? callback.getPolicies() : [],
+  );
 
   const label = callback.getPrompt ? callback.getPrompt() : null;
   const terms = callback.getTerms ? callback.getTerms() : null;
@@ -38,7 +40,8 @@ const Specials = ({ callback }) => {
         <Checkbox
           onChange={() => setChecked(!checked)}
           isChecked={checked}
-          aria-label="terms">
+          aria-label="terms"
+        >
           {terms !== null ? (
             <TermsModal
               terms={terms}

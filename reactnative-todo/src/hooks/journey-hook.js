@@ -73,6 +73,7 @@ function useJourneyHandler({ action }) {
        * user info in the UI.
        ********************************************************************* */
       const user = await FRAuthBridge.getUserInfo();
+
       setUser(user);
     }
 
@@ -87,14 +88,16 @@ function useJourneyHandler({ action }) {
           try {
             const data = await FRAuthBridge.login();
             const next = JSON.parse(data);
+            /*
+             * Web SDK Integration Point.
+             * Convert Response to a FRCallback
+             */
             const step = new FRStep(next);
-            console.log(step);
 
             setRenderStep(step);
             setSubmittingForm(false);
           } catch (err) {
             const token = await FRAuthBridge.getAccessToken();
-            console.log('here?', token);
             if (token) {
               setAuthentication(true);
               navigation.navigate('Home');
@@ -125,13 +128,9 @@ function useJourneyHandler({ action }) {
          * the next step to be returned, or a success or failure.
          ********************************************************************* */
         try {
-          const json = await FRAuthBridge.next(
+          const nextStep = await FRAuthBridge.next(
             JSON.stringify(renderStep.payload),
           );
-
-          const data = JSON.parse(json);
-          const nextStep = new FRStep(data);
-
           /**
            * Condition for handling start, error handling and completion
            * of login journey.
@@ -174,7 +173,11 @@ function useJourneyHandler({ action }) {
               JSON.stringify(submissionStep.payload),
             );
             const data = JSON.parse(json);
-            const newStep = new FRStep(data);
+
+            const newStep = new FRStep({
+              ...data,
+              sessionToken: JSON.parse(data.sessionToken),
+            });
             /** *******************************************************************
              * SDK INTEGRATION POINT
              * Summary: Repopulate callbacks/payload with previous data.

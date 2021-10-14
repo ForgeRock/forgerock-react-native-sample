@@ -88,11 +88,17 @@ function useJourneyHandler({ action }) {
             const data = await FRAuthBridge.login();
             const next = JSON.parse(data);
             const step = new FRStep(next);
+            console.log(step);
 
             setRenderStep(step);
             setSubmittingForm(false);
           } catch (err) {
-            console.log('err?', err);
+            const token = await FRAuthBridge.getAccessToken();
+            console.log('here?', token);
+            if (token) {
+              setAuthentication(true);
+              navigation.navigate('Home');
+            }
           }
         } else {
           const data = await FRAuthBridge.register();
@@ -158,36 +164,39 @@ function useJourneyHandler({ action }) {
 
           /** *******************************************************************
            * SDK INTEGRATION POINT
-           * Summary: Call next without previous step to get new authId.
+           * Summary: Call next with submission step payload
            * --------------------------------------------------------------------
-           * Details: Since this is within the failure block, let's call the next
-           * function again but with no step (null) to get a fresh authId.
-           ******************************************************************* */
-          const newStep = await FRAuthBridge.next(
-            JSON.stringify(submissionStep.payload),
-          );
+           * Details: Because LoginFailure throws, we have to handle the failure
+           * in the catch block
+           * ******************************************************************* */
+          try {
+            const json = await FRAuthBridge.next(
+              JSON.stringify(submissionStep.payload),
+            );
+            const data = JSON.parse(json);
+            const newStep = new FRStep(data);
+            /** *******************************************************************
+             * SDK INTEGRATION POINT
+             * Summary: Repopulate callbacks/payload with previous data.
+             * --------------------------------------------------------------------
+             * Details: Now that we have a new authId (the identification of the
+             * fresh step) let's populate this new step with old callback data if
+             * the stage is the same. If not, the user will have to refill form. We
+             * will display the error we collected from the previous submission,
+             * restart the flow, and provide better UX with the previous form data,
+             * so the user doesn't have to refill the form.
+             ******************************************************************* */
+            if (newStep.getStage && newStep.getStage() === previousStage) {
+              newStep.callbacks = previousCallbacks;
+              newStep.payload = {
+                ...previousPayload,
+                authId: newStep.payload.authId,
+              };
+            }
 
-          /** *******************************************************************
-           * SDK INTEGRATION POINT
-           * Summary: Repopulate callbacks/payload with previous data.
-           * --------------------------------------------------------------------
-           * Details: Now that we have a new authId (the identification of the
-           * fresh step) let's populate this new step with old callback data if
-           * the stage is the same. If not, the user will have to refill form. We
-           * will display the error we collected from the previous submission,
-           * restart the flow, and provide better UX with the previous form data,
-           * so the user doesn't have to refill the form.
-           ******************************************************************* */
-          if (newStep.getStage() === previousStage) {
-            newStep.callbacks = previousCallbacks;
-            newStep.payload = {
-              ...previousPayload,
-              authId: newStep.payload.authId,
-            };
-          }
-
-          setRenderStep(newStep);
-          setSubmittingForm(false);
+            setRenderStep(newStep);
+            setSubmittingForm(false);
+          } catch (err) {}
         }
       }
     }

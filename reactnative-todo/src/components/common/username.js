@@ -12,13 +12,13 @@ const Username = ({ callback }) => {
   return (
     <FormControl isInvalid={error}>
       <FormControl.Label>{label}</FormControl.Label>
-      <FormControl.ErrorMessage>{error}</FormControl.ErrorMessage>
       <Input
         onChangeText={setUsername}
         autoCapitalize="none"
         autoComplete="off"
         autoCorrect={false}
       />
+      <FormControl.ErrorMessage>{error}</FormControl.ErrorMessage>
     </FormControl>
   );
 };

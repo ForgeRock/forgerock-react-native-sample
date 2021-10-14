@@ -7,11 +7,10 @@ const Username = ({ callback }) => {
     callback.getFailedPolicies ? callback.getFailedPolicies() : [],
   );
 
-  const required = (callback.isRequired && callback.isRequired()) || false;
   const label = callback.getPrompt();
   const setUsername = (text) => callback.setName(text);
   return (
-    <FormControl required={required} isInvalid={error}>
+    <FormControl isInvalid={error}>
       <FormControl.Label>{label}</FormControl.Label>
       <FormControl.ErrorMessage>{error}</FormControl.ErrorMessage>
       <Input

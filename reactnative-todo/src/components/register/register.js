@@ -4,7 +4,7 @@ import { Button, Box, FormControl, ScrollView } from 'native-base';
 
 import { Header } from './header';
 import { Loading } from '../utilities/loading';
-import { callbackTypeToComponent } from '../utilities/callback-map';
+import { mapCallbacksToComponents } from '../common/mapComponentsToCallback';
 import { AppContext } from '../../global-state';
 import { FRStep } from '@forgerock/javascript-sdk';
 
@@ -32,7 +32,7 @@ function RegisterContainer({ setStep, data, navigation, setLoading, loading }) {
       console.log('err', err, err.message);
     }
   };
-  console.log(data);
+
   return loading ? (
     <Loading message={'Checking your session'} />
   ) : (
@@ -40,15 +40,9 @@ function RegisterContainer({ setStep, data, navigation, setLoading, loading }) {
       <Box safeArea flex={1} p={2} w="90%" mx="auto">
         <Header />
         <FormControl>
-          {data?.callbacks.map((callback) => {
-            return callback.getType() === 'TermsAndConditionsCallback'
-              ? callbackTypeToComponent[callback.getType()]({
-                  callback,
-                })
-              : callback?.getPredefinedQuestions ?? null
-              ? callbackTypeToComponent[callback.getType()]({ callback })
-              : callbackTypeToComponent[callback.getType()]({ callback });
-          }) ?? null}
+          {data?.callbacks.map((callback, idx) =>
+            mapCallbacksToComponents(callback, idx),
+          )}
           <Button onPress={handleRegistrationSubmit}>Register</Button>
         </FormControl>
       </Box>

@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { RegisterContainer } from '../components/register';
+import { Form } from '../components/common/form';
 import { Loading } from '../components/utilities/loading';
 import { FRStep } from '@forgerock/javascript-sdk';
 import { NativeModules } from 'react-native';
 
 const { FRAuthBridge } = NativeModules;
 
-function Register({ navigation }) {
+function Register() {
   const [data, setStep] = useState(null);
   const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     async function start() {
       try {
@@ -29,12 +30,11 @@ function Register({ navigation }) {
   return loading ? (
     <Loading message={'Checking your session'} />
   ) : (
-    <RegisterContainer
-      navigation={navigation}
+    <Form
       data={data}
+      action={{ type: 'register' }}
       setStep={setStep}
       setLoading={setLoading}
-      navigation={navigation}
     />
   );
 }

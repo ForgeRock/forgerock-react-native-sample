@@ -3,23 +3,12 @@ import { Box, VStack, FormControl, ScrollView } from 'native-base';
 import { NativeModules } from 'react-native';
 
 import { AppContext } from '../../global-state.js';
-import { Password } from '../common/password';
-import { Username } from '../common/username';
 import { Loading } from '../utilities/loading';
 import { Footer } from './footer';
 import { Header } from './header';
+import { mapCallbacksToComponents } from '../common/mapComponentsToCallback';
 
 const { FRAuthBridge } = NativeModules;
-
-// Given a CallbackType, return a Component
-const callbackToComponentMap = {
-  NameCallback: ({ callback }) => (
-    <Username callback={callback} key={callback._id} />
-  ),
-  PasswordCallback: ({ callback }) => (
-    <Password callback={callback} key={callback._id} />
-  ),
-};
 
 function LoginContainer({ step, callbacks, error, setLoading, loading }) {
   const [err, setErr] = useState(error);
@@ -79,13 +68,7 @@ function LoginContainer({ step, callbacks, error, setLoading, loading }) {
           ) : null}
           <VStack space={2} mt={5}>
             {callbacks.length
-              ? callbacks.map((callback) =>
-                  callbackToComponentMap[callback.getType()]
-                    ? callbackToComponentMap[callback.getType()]({
-                        callback,
-                      })
-                    : null,
-                )
+              ? callbacks.map((callback) => mapCallbacksToComponents(callback))
               : null}
             <Footer handleSubmit={handleSubmit} />
           </VStack>

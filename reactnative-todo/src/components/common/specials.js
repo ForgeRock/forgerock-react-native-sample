@@ -20,7 +20,7 @@ function TermsModal({ terms, showModal, setModal }) {
   );
 }
 
-const Specials = ({ callback }) => {
+const TermsAndConditions = ({ callback }) => {
   const [checked, setChecked] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const error = handleFailedPolicies(
@@ -57,4 +57,4 @@ const Specials = ({ callback }) => {
   );
 };
 
-export { Specials };
+export { TermsAndConditions };

@@ -8,13 +8,13 @@ function KBA({ callback }) {
     callback.setQuestion(question);
   };
   const label = callback.getPrompt();
+
   return (
     <FormControl>
       <FormControl.Label>{label}</FormControl.Label>
-
       <Select
-        accessibilityLabel="Select Security Question"
-        placeholder="Select Security Question"
+        accessibilityLabel={label}
+        placeholder={label}
         selectedValue={selectedQuestion}
         onValueChange={updateQuestion}
       >

@@ -262,7 +262,11 @@ public class FRAuthBridge: NSObject {
         reject("Error", "Serializing Node failed", error)
       }
     } else {
-      reject("Error", "No node present", nil)
+      if let error = error {
+        reject("Error", error.localizedDescription, error)
+      } else {
+        reject("Error", "No node and error present", nil)
+      }
     }
   }
 }

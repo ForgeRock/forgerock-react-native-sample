@@ -42,7 +42,7 @@ function useJourneyHandler({ action }) {
   const [submittingForm, setSubmittingForm] = useState(false);
   // User state
   const [user, setUser] = useState(null);
-  const [{ isAuthenticated }, { setAuthentication }] = useContext(AppContext);
+  const [, { setAuthentication }] = useContext(AppContext);
   const navigation = useNavigation();
 
   /**
@@ -119,9 +119,12 @@ function useJourneyHandler({ action }) {
          * the next step to be returned, or a success or failure.
          ********************************************************************* */
         try {
-          const nextStep = await FRAuthBridge.next(
+          const json = await FRAuthBridge.next(
             JSON.stringify(renderStep.payload),
           );
+
+          const data = JSON.parse(json);
+          const nextStep = new FRStep(data);
 
           /**
            * Condition for handling start, error handling and completion
@@ -145,36 +148,6 @@ function useJourneyHandler({ action }) {
            * Handle basic form error
            */
           setFormFailureMessage(err.message);
-
-          // /** *******************************************************************
-          //  * SDK INTEGRATION POINT
-          //  * Summary: Call next without previous step to get new authId.
-          //  * --------------------------------------------------------------------
-          //  * Details: Since this is within the failure block, let's call the next
-          //  * function again but with no step (null) to get a fresh authId.
-          //  ******************************************************************* */
-          // const newStep = await FRAuthBridge.next(
-          //   JSON.stringify(submissionStep.payload),
-          // );
-
-          // /** *******************************************************************
-          //  * SDK INTEGRATION POINT
-          //  * Summary: Repopulate callbacks/payload with previous data.
-          //  * --------------------------------------------------------------------
-          //  * Details: Now that we have a new authId (the identification of the
-          //  * fresh step) let's populate this new step with old callback data if
-          //  * the stage is the same. If not, the user will have to refill form. We
-          //  * will display the error we collected from the previous submission,
-          //  * restart the flow, and provide better UX with the previous form data,
-          //  * so the user doesn't have to refill the form.
-          //  ******************************************************************* */
-          // if (newStep.getStage() === previousStage) {
-          //   newStep.callbacks = previousCallbacks;
-          //   newStep.payload = {
-          //     ...previousPayload,
-          //     authId: newStep.payload.authId,
-          //   };
-          // }
 
           // setRenderStep(newStep);
           setSubmittingForm(false);
@@ -226,18 +199,14 @@ function useJourneyHandler({ action }) {
     getStep(submissionStep);
   }, [action.type, submissionStep]);
 
-  return [
-    {
-      formFailureMessage,
-      renderStep,
-      submittingForm,
-      user,
-    },
-    {
-      setSubmissionStep,
-      setSubmittingForm,
-    },
-  ];
+  return {
+    formFailureMessage,
+    renderStep,
+    submittingForm,
+    user,
+    setSubmissionStep,
+    setSubmittingForm,
+  };
 }
 
 export { useJourneyHandler };

@@ -8,6 +8,7 @@ function handleFailedPolicies(failedPolicies = []) {
       } catch (err) {
         console.log(`Parsing failure for ${err.message}`);
       }
+
       switch (failureObj.policyRequirement) {
         case 'REQUIRED':
           prev = `This field is required`;

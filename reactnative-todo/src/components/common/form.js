@@ -7,12 +7,13 @@ import { Loading } from '../utilities/loading';
 import { mapCallbacksToComponents } from '../common/mapComponentsToCallback';
 
 function Form({ action }) {
-  const [
-    { formFailureMessage, renderStep, submittingForm },
-    { setSubmissionStep, setSubmittingForm },
-  ] = useJourneyHandler({ action });
-
-  console.log(renderStep);
+  const {
+    formFailureMessage,
+    renderStep,
+    submittingForm,
+    setSubmissionStep,
+    setSubmittingForm,
+  } = useJourneyHandler({ action });
 
   return submittingForm ? (
     <Loading message={'Checking your session'} />
@@ -20,7 +21,10 @@ function Form({ action }) {
     <ScrollView>
       <Box safeArea flex={1} p={2} w="90%" mx="auto">
         <Header type={action.type} />
-        <FormControl>
+        <FormControl isInvalid={formFailureMessage}>
+          <FormControl.ErrorMessage>
+            {formFailureMessage}
+          </FormControl.ErrorMessage>
           {renderStep
             ? renderStep.callbacks.map((callback, idx) =>
                 mapCallbacksToComponents(callback, idx),

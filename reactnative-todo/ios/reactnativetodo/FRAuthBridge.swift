@@ -262,7 +262,11 @@ public class FRAuthBridge: NSObject {
         reject("Error", "Serializing Node failed", error)
       }
     } else {
-      reject("Error", "No node present", nil)
+      if let error = error {
+        reject("Error", error.localizedDescription, error)
+      } else {
+        reject("Error", "No node and error present", nil)
+      }
     }
   }
 }
@@ -460,7 +464,6 @@ public struct FlexibleType: Codable {
     } else {
       originalType = .String
       value = ""
-      //throw DecodingError.typeMismatch(String.self, .init(codingPath: decoder.codingPath, debugDescription: ""))
     }
   }
   
@@ -480,13 +483,12 @@ public struct FlexibleType: Codable {
       try container.encode(unwarpedValue)
     default:
       try container.encode("")
-      //throw EncodingError.invalidValue(value, EncodingError.Context(codingPath: [], debugDescription: "Invalid JSON value"))
     }
     
   }
 }
 
-extension Dictionary {
+fileprivate extension Dictionary {
     
     /// Convert Dictionary to JSON string
     /// - Throws: exception if dictionary cannot be converted to JSON data or when data cannot be converted to UTF8 string
@@ -500,7 +502,7 @@ extension Dictionary {
     }
 }
 
-extension Array {
+fileprivate extension Array {
   
   /// Convert Array to JSON string
   /// - Throws: exception if Array cannot be converted to JSON data or when data cannot be converted to UTF8 string

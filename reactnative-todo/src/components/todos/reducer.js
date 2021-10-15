@@ -1,5 +1,5 @@
 /*
- * forgerock-sample-web-react
+ * forgerock-react-native-sample
  *
  * reducer.js
  *

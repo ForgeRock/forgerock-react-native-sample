@@ -1,5 +1,21 @@
+/*
+ * forgerock-react-native-sample
+ *
+ * boolean.js
+ *
+ * Copyright (c) 2021 ForgeRock. All rights reserved.
+ * This software may be modified and distributed under the terms
+ * of the MIT license. See the LICENSE file for details.
+ */
 import React, { useState, Fragment } from 'react';
-import { VStack, Checkbox, Text, Modal, useToken } from 'native-base';
+import {
+  VStack,
+  FormControl,
+  Checkbox,
+  Text,
+  Modal,
+  useToken,
+} from 'native-base';
 import { handleFailedPolicies } from '../utilities/failed-policies';
 
 function TermsModal({ terms, showModal, setModal }) {
@@ -20,9 +36,10 @@ function TermsModal({ terms, showModal, setModal }) {
   );
 }
 
-const Specials = ({ callback }) => {
+const TermsAndConditions = ({ callback }) => {
   const [checked, setChecked] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const isRequired = callback.isRequired ? callback.isRequired() : false;
   const error = handleFailedPolicies(
     callback.getPolicies ? callback.getPolicies() : [],
   );
@@ -36,25 +53,27 @@ const Specials = ({ callback }) => {
   return (
     <VStack mb={3}>
       {error ? <Text>{error}</Text> : null}
-      <Checkbox.Group accessibilityLabel="terms-checkbox">
-        <Checkbox
-          onChange={() => setChecked(!checked)}
-          isChecked={checked}
-          aria-label="terms"
-        >
-          {terms !== null ? (
-            <TermsModal
-              terms={terms}
-              showModal={showModal}
-              setModal={setShowModal}
-            />
-          ) : (
-            label
-          )}
-        </Checkbox>
-      </Checkbox.Group>
+      <FormControl isRequired={isRequired}>
+        <Checkbox.Group accessibilityLabel="terms-checkbox">
+          <Checkbox
+            onChange={() => setChecked(!checked)}
+            isChecked={checked}
+            aria-label="terms"
+          >
+            {terms !== null ? (
+              <TermsModal
+                terms={terms}
+                showModal={showModal}
+                setModal={setShowModal}
+              />
+            ) : (
+              label
+            )}
+          </Checkbox>
+        </Checkbox.Group>
+      </FormControl>
     </VStack>
   );
 };
 
-export { Specials };
+export { TermsAndConditions };

@@ -1,7 +1,7 @@
 /*
- * forgerock-sample-web-react
+ * forgerock-react-native-sample
  *
- * fetch.js
+ * use-todos.js
  *
  * Copyright (c) 2021 ForgeRock. All rights reserved.
  * This software may be modified and distributed under the terms

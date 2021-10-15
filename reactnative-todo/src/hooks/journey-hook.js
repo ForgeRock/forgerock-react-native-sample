@@ -1,7 +1,7 @@
 /*
- * forgerock-sample-web-react
+ * forgerock-react-native-sample
  *
- * state.js
+ * journey-hook.js
  *
  * Copyright (c) 2021 ForgeRock. All rights reserved.
  * This software may be modified and distributed under the terms
@@ -56,16 +56,16 @@ function useJourneyHandler({ action }) {
      */
     async function getOAuth() {
       /** *********************************************************************
-       * SDK INTEGRATION POINT
+       * Native Bridge SDK INTEGRATION POINT
        * Summary: Get OAuth/OIDC tokens with Authorization Code Flow w/PKCE.
        * ----------------------------------------------------------------------
        * Details: Since we have successfully authenticated the user, we can now
        * get the OAuth2/OIDC tokens.
-       * ************************************************************************* */
+       * ******************************************************************** */
       await FRAuthBridge.getAccessToken();
 
       /** *********************************************************************
-       * SDK INTEGRATION POINT
+       * Native Bridge SDK INTEGRATION POINT
        * Summary: Call the user info endpoint for some basic user data.
        * ----------------------------------------------------------------------
        * Details: This is an OAuth2 call that returns user information with a
@@ -83,15 +83,20 @@ function useJourneyHandler({ action }) {
      * @returns {undefined}
      */
     async function getStep(prev) {
+      // if we have no render step we are initiliazing a login or a register flow
       if (!renderStep) {
         if (action.type === 'login') {
           try {
+            /*****************************************************************
+             * Native Bridge SDK Integration Point
+             * Call the login endpoint
+             *************************************************************** */
             const data = await FRAuthBridge.login();
             const next = JSON.parse(data);
-            /*
-             * Web SDK Integration Point.
+            /*****************************************************************
+             * Javascript SDK Integration Point.
              * Convert Response to a FRCallback
-             */
+             *************************************************************** */
             const step = new FRStep(next);
 
             setRenderStep(step);
@@ -121,7 +126,7 @@ function useJourneyHandler({ action }) {
         const previousPayload = prev?.payload;
 
         /** *********************************************************************
-         * SDK INTEGRATION POINT
+         * Native Bridge SDK INTEGRATION POINT
          * Summary: Call the SDK's next method to submit the current step.
          * ----------------------------------------------------------------------
          * Details: This calls the next method with the previous step, expecting
@@ -162,7 +167,7 @@ function useJourneyHandler({ action }) {
           setFormFailureMessage(err.message);
 
           /** *******************************************************************
-           * SDK INTEGRATION POINT
+           * Native Bridge SDK INTEGRATION POINT
            * Summary: Call next with submission step payload
            * --------------------------------------------------------------------
            * Details: Because LoginFailure throws, we have to handle the failure
@@ -178,17 +183,7 @@ function useJourneyHandler({ action }) {
               ...data,
               sessionToken: JSON.parse(data.sessionToken),
             });
-            /** *******************************************************************
-             * SDK INTEGRATION POINT
-             * Summary: Repopulate callbacks/payload with previous data.
-             * --------------------------------------------------------------------
-             * Details: Now that we have a new authId (the identification of the
-             * fresh step) let's populate this new step with old callback data if
-             * the stage is the same. If not, the user will have to refill form. We
-             * will display the error we collected from the previous submission,
-             * restart the flow, and provide better UX with the previous form data,
-             * so the user doesn't have to refill the form.
-             ******************************************************************* */
+
             if (newStep.getStage && newStep.getStage() === previousStage) {
               newStep.callbacks = previousCallbacks;
               newStep.payload = {
@@ -204,10 +199,10 @@ function useJourneyHandler({ action }) {
       }
     }
 
-    /**
+    /* *******************************************************************
      * Kickstart the authentication journey!
      * submissionStep will initially be `null`, and that's intended.
-     */
+     ****************************************************************** */
     getStep(submissionStep);
   }, [action.type, submissionStep]);
 

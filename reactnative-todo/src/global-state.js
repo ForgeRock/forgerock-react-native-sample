@@ -1,7 +1,7 @@
 /*
  * forgerock-sample-web-react
  *
- * state.js
+ * global-state.js
  *
  * Copyright (c) 2021 ForgeRock. All rights reserved.
  * This software may be modified and distributed under the terms

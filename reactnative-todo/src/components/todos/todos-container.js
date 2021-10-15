@@ -1,3 +1,12 @@
+/*
+ * forgerock-react-native-sample
+ *
+ * todos-container.js
+ *
+ * Copyright (c) 2021 ForgeRock. All rights reserved.
+ * This software may be modified and distributed under the terms
+ * of the MIT license. See the LICENSE file for details.
+ */
 import React, { useReducer } from 'react';
 import { Box, Center, Heading, ScrollView, Text } from 'native-base';
 import { Todos } from './todo';

@@ -1,7 +1,7 @@
 /*
- * forgerock-reactnative-sample
+ * forgerock-react-native-sample
  *
- * index.js
+ * boolean.js
  *
  * Copyright (c) 2021 ForgeRock. All rights reserved.
  * This software may be modified and distributed under the terms

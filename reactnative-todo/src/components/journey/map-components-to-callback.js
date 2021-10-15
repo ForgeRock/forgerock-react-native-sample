@@ -1,7 +1,7 @@
 /*
  * forgerock-reactnative-sample
  *
- * index.js
+ * map-components-to-callback.js
  *
  * Copyright (c) 2021 ForgeRock. All rights reserved.
  * This software may be modified and distributed under the terms
@@ -17,7 +17,7 @@ import { TextField } from './text-field';
 function mapCallbacksToComponents(cb, idx) {
   const name = cb?.payload?.input?.[0].name;
   /** *********************************************************************
-   * Web SDK INTEGRATION POINT
+   * Javascript SDK INTEGRATION POINT
    * Summary: SDK callback method for getting the callback type
    * ----------------------------------------------------------------------
    * Details: This method is helpful in quickly identifying the callback

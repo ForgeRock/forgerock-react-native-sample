@@ -1,3 +1,13 @@
+/*
+ * forgerock-react-native-sample
+ *
+ * edit-modal.js
+ *
+ * Copyright (c) 2021 ForgeRock. All rights reserved.
+ * This software may be modified and distributed under the terms
+ * of the MIT license. See the LICENSE file for details.
+ */
+
 import React, { useState } from 'react';
 import { Text, Input, Button, Modal } from 'native-base';
 
@@ -23,7 +33,8 @@ export const EditModal = (props) => {
                 colorScheme="blueGray"
                 onPress={() => {
                   setShowModal(false);
-                }}>
+                }}
+              >
                 Cancel
               </Button>
               <Button
@@ -31,7 +42,8 @@ export const EditModal = (props) => {
                   setShowModal(false);
                   await props.editTodo({ ...props.todo, title: text });
                   onChange('');
-                }}>
+                }}
+              >
                 Save
               </Button>
             </Button.Group>

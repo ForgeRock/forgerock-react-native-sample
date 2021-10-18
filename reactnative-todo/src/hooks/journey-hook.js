@@ -41,7 +41,6 @@ function useJourneyHandler({ action }) {
   // Processing submission
   const [submittingForm, setSubmittingForm] = useState(false);
   // User state
-  const [user, setUser] = useState(null);
   const [, { setAuthentication }] = useContext(AppContext);
   const navigation = useNavigation();
 
@@ -72,9 +71,20 @@ function useJourneyHandler({ action }) {
        * valid access token. This is optional and only used for displaying
        * user info in the UI.
        ********************************************************************* */
-      const user = await FRAuthBridge.getUserInfo();
-
-      setUser(user);
+      try {
+        await FRAuthBridge.getUserInfo();
+      } catch (err) {
+        /**
+         * Native Bridge SDK Integration Point
+         * Summary: Logging out user if we fail to get user info at this point
+         * ------------------------------------------------------------------
+         *  Details: At this point we should have user information returned.
+         *  If we do not, we are in a weird state and should force a logout and return an error
+         *  requiring the user to login again.
+         *  *************************************************************** */
+        await FRAuthBridge.logout();
+        setFormFailureMessage('error retrieving user');
+      }
     }
 
     /**
@@ -210,7 +220,6 @@ function useJourneyHandler({ action }) {
     formFailureMessage,
     renderStep,
     submittingForm,
-    user,
     setSubmissionStep,
     setSubmittingForm,
   };

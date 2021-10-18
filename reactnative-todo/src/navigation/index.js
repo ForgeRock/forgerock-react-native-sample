@@ -14,32 +14,14 @@ import { NavigationContainer } from '@react-navigation/native';
 
 import Theme from '../theme/index';
 import { AppContext, useGlobalStateMgmt } from '../global-state';
-import { useToggle } from '../hooks/use-toggle';
 import { LoginRoutes, TodoRoutes } from '../navigation/routes';
 
 const { FRAuthBridge } = NativeModules;
 
 function Navigation() {
-  const [auth, setAuth] = useToggle(false);
-
-  useEffect(() => {
-    async function checkForToken() {
-      try {
-        if (!auth) {
-          const token = await FRAuthBridge.getAccessToken();
-          setAuth(Boolean(token));
-        }
-      } catch (err) {
-        console.log('the error', err);
-      }
-    }
-    checkForToken();
-  }, [auth]);
-
   const stateMgmt = useGlobalStateMgmt({
-    isAuthenticated: auth,
+    isAuthenticated: false,
   });
-
   const [{ isAuthenticated }] = stateMgmt;
 
   return (
@@ -54,8 +36,18 @@ function Navigation() {
 }
 
 function RootNavigator() {
-  const [{ isAuthenticated }] = useContext(AppContext);
-
+  const [{ isAuthenticated }, { setAuthentication }] = useContext(AppContext);
+  useEffect(() => {
+    async function checkForToken() {
+      try {
+        const token = await FRAuthBridge.getAccessToken();
+        setAuthentication(Boolean(token));
+      } catch (err) {
+        console.log('the error', err);
+      }
+    }
+    checkForToken();
+  }, [isAuthenticated]);
   return isAuthenticated ? <TodoRoutes /> : <LoginRoutes />;
 }
 

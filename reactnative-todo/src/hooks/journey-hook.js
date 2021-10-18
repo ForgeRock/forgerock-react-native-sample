@@ -16,11 +16,14 @@ import { AppContext } from '../global-state';
 const { FRAuthSampleBridge } = NativeModules;
 /**
  *
- * @param {Object} props - React props object
- * @param {Object} props.action - Action object for a "reducer" pattern
- * @param {string} props.action.type - Action type string that represents the action
- * @param {Object} props.form - The form metadata object
- * @returns {Object} - React component object
+ *  @param {Object} { action: { type : 'login' | 'register' } }
+ *  @returns {Object} - {
+ *    formFailureMessage: string,
+ *    renderStep: Object<any>,
+ *    submittingForm: Boolean,
+ *    setSubmissionStep: React Hook Setter,
+ *    setSubmittingForm: React Hook Setter,
+ * };
  */
 function useJourneyHandler({ action }) {
   /**
@@ -99,13 +102,23 @@ function useJourneyHandler({ action }) {
           try {
             /*****************************************************************
              * Native Bridge SDK Integration Point
-             * Call the login endpoint
+             * Summary: Call the login endpoint
+             * --------------------------------------------------------------
+             * Details: When we have no current 'renderStep', that means we have no data to render.
+             * Given our action type, we know we want to login so we can call the login method
+             * in order to get back our data to render for our login screen.
              *************************************************************** */
             const data = await FRAuthSampleBridge.login();
             const next = JSON.parse(data);
             /*****************************************************************
              * Javascript SDK Integration Point.
-             * Convert Response to a FRCallback
+             * Summary: Convert Response to an FRStep
+             * --------------------------------------------------------------
+             * This is a helper method provided by the Javascript SDK.
+             * It will decorate the callbacks array items (each object), with
+             * helper methods on the prototype for each object.
+             * In return, much of the state management
+             * is taken care of by the SDK layer.
              *************************************************************** */
             const step = new FRStep(next);
 
@@ -119,6 +132,14 @@ function useJourneyHandler({ action }) {
             }
           }
         } else {
+          /*****************************************************************
+           * Native Bridge SDK Integration Point
+           * Summary: Call the register endpoint
+           * --------------------------------------------------------------
+           * Details: When we have no current 'renderStep', that means we have no data to render.
+           * Given our action type, we know we want to register a user, so we can call the login method
+           * in order to get back our data to render for our register screen.
+           *************************************************************** */
           const data = await FRAuthSampleBridge.register();
           const next = JSON.parse(data);
           const step = new FRStep(next);

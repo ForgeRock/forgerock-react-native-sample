@@ -19,7 +19,7 @@ async function request(method, resource = '', body = null) {
   const tokens = JSON.parse(json);
   const { tokenType, value } = tokens;
   try {
-    const res = await fetch(`${API_URL}todos/${resource}`, {
+    const res = await fetch(`${API_URL}/todos/${resource}`, {
       method,
       body: body && JSON.stringify(body),
       headers: {

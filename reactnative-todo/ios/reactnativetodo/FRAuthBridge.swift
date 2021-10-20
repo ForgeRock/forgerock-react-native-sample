@@ -107,54 +107,48 @@ public class FRAuthBridge: NSObject {
         reject("Error", "UnkownError", error)
       }
       
-      let callbacksArray = responseObject!.callbacks ?? []
-      // If the array is empty there are no user inputs. This can happen in callbacks like the DeviceProfileCallback, that do not require user interaction.
-      // Other callbacks like SingleValueCallback, will return the user inputs in an array of dictionaries [[String:String]] with the keys: identifier and text
-      if callbacksArray.count == 0 {
-        for nodeCallback in node.callbacks {
-          if let thisCallback = nodeCallback as? DeviceProfileCallback {
-            let semaphore = DispatchSemaphore(value: 1)
-            semaphore.wait()
-            thisCallback.execute { _ in
-              semaphore.signal()
-            }
-          }
-        }
-      } else {
-        for (outerIndex, nodeCallback) in node.callbacks.enumerated() {
-          if let thisCallback = nodeCallback as? KbaCreateCallback {
-            for (innerIndex, rawCallback) in callbacksArray.enumerated() {
-              if let inputsArray = rawCallback.input, outerIndex == innerIndex {
-                for input in inputsArray {
-                  if let value = input.value!.value as? String {
-                    if input.name.contains("question") {
-                      thisCallback.setQuestion(value)
-                    } else {
-                      thisCallback.setAnswer(value)
-                    }
+      let callbacksArray = responseObject?.callbacks ?? []
+  
+      for (outerIndex, nodeCallback) in node.callbacks.enumerated() {
+        if let thisCallback = nodeCallback as? KbaCreateCallback {
+          for (innerIndex, rawCallback) in callbacksArray.enumerated() {
+            if let inputsArray = rawCallback.input, outerIndex == innerIndex {
+              for input in inputsArray {
+                if let value = input.value!.value as? String {
+                  if input.name.contains("question") {
+                    thisCallback.setQuestion(value)
+                  } else {
+                    thisCallback.setAnswer(value)
                   }
                 }
               }
             }
           }
-          if let thisCallback = nodeCallback as? SingleValueCallback {
-            for (innerIndex, rawCallback) in callbacksArray.enumerated() {
-              if let inputsArray = rawCallback.input, outerIndex == innerIndex, let value = inputsArray.first?.value {
-                switch value.originalType {
-                case .String:
-                  thisCallback.setValue(value.value as! String)
-                case .Int:
-                  thisCallback.setValue(value.value as! Int)
-                case .Double:
-                  thisCallback.setValue(value.value as! Double)
-                case .Bool:
-                  thisCallback.setValue(value.value as! Bool)
-                default:
-                  break
-                }
-                
+        }
+        if let thisCallback = nodeCallback as? SingleValueCallback {
+          for (innerIndex, rawCallback) in callbacksArray.enumerated() {
+            if let inputsArray = rawCallback.input, outerIndex == innerIndex, let value = inputsArray.first?.value {
+              switch value.originalType {
+              case .String:
+                thisCallback.setValue(value.value as! String)
+              case .Int:
+                thisCallback.setValue(value.value as! Int)
+              case .Double:
+                thisCallback.setValue(value.value as! Double)
+              case .Bool:
+                thisCallback.setValue(value.value as! Bool)
+              default:
+                break
               }
+              
             }
+          }
+        }
+        if let thisCallback = nodeCallback as? DeviceProfileCallback {
+          let semaphore = DispatchSemaphore(value: 1)
+          semaphore.wait()
+          thisCallback.execute { _ in
+            semaphore.signal()
           }
         }
       }

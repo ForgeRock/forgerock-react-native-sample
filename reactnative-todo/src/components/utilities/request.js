@@ -14,8 +14,8 @@ import { API_URL } from 'react-native-dotenv';
 const { FRAuthSampleBridge } = NativeModules;
 
 async function request(method, resource = '', body = null) {
-  /**
-   * Native Bridge SDK Integration Point
+   /***************************************************************** 
+   * NATIVE BRIDGE SDK INTEGRATION POINT
    * Summary: Checking for access token to make request
    * ------------------------------------------------------------------
    *  Details: Here we are checking for an existing access token in order to make

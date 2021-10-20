@@ -39,6 +39,15 @@ function TermsModal({ terms, showModal, setModal }) {
 const TermsAndConditions = ({ callback }) => {
   const [checked, setChecked] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  /******************************************************************** 
+   * JAVASCRIPT SDK INTEGRATION POINT
+   * Summary: Utilize Callback methods
+   * ------------------------------------------------------------------
+   *  Details: Because we wrap our responses in FRStep using the Javascript SDK
+   *  we have access to helper methods to set, and retrieve information from our response.
+   *  Referencing these helper methods allows us to avoid managing the state
+   *  in our own application and leverage the SDK to do so
+   *  *************************************************************** */
   const isRequired = callback.isRequired ? callback.isRequired() : false;
   const error = handleFailedPolicies(
     callback.getPolicies ? callback.getPolicies() : [],

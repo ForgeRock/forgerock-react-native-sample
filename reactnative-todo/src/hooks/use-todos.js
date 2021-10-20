@@ -15,7 +15,6 @@ import { request } from '../components/utilities/request';
  * @function useTodos - A custom React hook for fetching todos from API
  * @param {Function} dispatch - The function to pass in an action with data to result in new state
  * @param {Function} setFetched - A function for setting the state of hasFetched
- * @param {string} todosLength - The todo collection
  * @returns {undefined} - this doesn't directly return anything, but calls dispatch to set data
  */
 export function useTodos(dispatch, setFetched) {

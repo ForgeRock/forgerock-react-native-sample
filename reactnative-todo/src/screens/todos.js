@@ -12,7 +12,7 @@ import * as React from 'react';
 import { TodoContainer } from '../components/todos';
 
 function Todos() {
-  return <TodoContainer addTodo={() => {}} />;
+  return <TodoContainer />;
 }
 
 export { Todos };

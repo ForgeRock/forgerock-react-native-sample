@@ -36,26 +36,36 @@ function Navigation() {
 }
 
 function RootNavigator() {
-  const [{ isAuthenticated }, { setAuthentication }] = useContext(AppContext);
+  const [isAuthenticated, setAuthentication] = useContext(AppContext);
   useEffect(() => {
     async function checkForToken() {
       try {
-        const token = await FRAuthSampleBridge.getAccessToken();
-        setAuthentication(Boolean(token));
-      } catch (err) {
-	/**
+        /**
          * Native Bridge SDK Integration Point
          * Summary: Logging out user if we fail to get user info at this point
          * ------------------------------------------------------------------
          *  Details: If we throw here, we want to clear out any state so that
-	 *  we can continue to re render the page with a clean state
+         *  we can continue to re render the page with a clean state
          *  *************************************************************** */
 
-	await FRAuthSampleBridge.logout();
+        await FRAuthSampleBridge.logout();
+        /** *********************************************************************
+         * NATIVE BRIDGE SDK INTEGRATION POINT
+         * Summary: Get OAuth/OIDC tokens with Authorization Code Flow w/PKCE.
+         * ----------------------------------------------------------------------
+         * Details: Since we have successfully authenticated the user, we can now
+         * get the OAuth2/OIDC tokens.
+         * ******************************************************************** */
+
+        const token = await FRAuthBridge.getAccessToken();
+        setAuthentication(Boolean(token));
+      } catch (err) {
+        console.log('error getting access token ', err);
       }
     }
     checkForToken();
   }, [isAuthenticated]);
+
   return isAuthenticated ? <TodoRoutes /> : <LoginRoutes />;
 }
 

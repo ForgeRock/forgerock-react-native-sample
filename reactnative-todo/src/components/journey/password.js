@@ -37,6 +37,18 @@ function handlePasswordFailures(arr = []) {
   }, '');
 }
 const Password = ({ callback }) => {
+  /******************************************************************** 
+   * JAVASCRIPT SDK INTEGRATION POINT
+   * Summary: Utilize Callback methods
+   * ------------------------------------------------------------------
+   *  Details: Because we wrap our responses in FRStep using the Javascript SDK
+   *  we have access to helper methods to set, and retrieve information from our response.
+   *  Referencing these helper methods allows us to avoid managing the state
+   *  in our own application and leverage the SDK to do so
+   *
+   *  Note: Password is a little unique so we have to have some handling
+   *  for Password that we don't have for other callbacks
+   *  *************************************************************** */
   const label = callback.getPrompt();
   const setPassword = (text) => callback.setPassword(text);
   const error = handlePasswordFailures(callback?.getFailedPolicies());

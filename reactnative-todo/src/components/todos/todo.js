@@ -9,17 +9,7 @@
  */
 import * as React from 'react';
 import { Pressable } from 'react-native';
-import {
-  Box,
-  HStack,
-  Menu,
-  Center,
-  Text,
-  VStack,
-  Checkbox,
-  Divider,
-  ScrollView,
-} from 'native-base';
+import { HStack, Menu, Text, Checkbox, Divider } from 'native-base';
 import { EditModal } from './edit-modal';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -69,20 +59,4 @@ function Todo({ todo, handleStatusChange, handleDelete, editTodo }) {
   );
 }
 
-function Todos(props) {
-  return (
-    <VStack>
-      {props.todos.map((todo) => (
-        <Todo
-          todo={todo}
-          key={todo._id}
-          editTodo={props.editTodo}
-          handleDelete={props.handleDelete}
-          handleStatusChange={props.handleStatusChange}
-        />
-      ))}
-    </VStack>
-  );
-}
-
-export { Todos };
+export { Todo };

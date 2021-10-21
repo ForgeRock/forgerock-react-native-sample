@@ -10,7 +10,7 @@
 
 import { useEffect } from 'react';
 import { request } from '../components/utilities/request';
-import { API_URL, AN_UNDEFINED_URL } from 'react-native-dotenv';
+import { API_URL } from 'react-native-dotenv';
 
 /**
  * @function useTodos - A custom React hook for fetching todos from API
@@ -19,7 +19,7 @@ import { API_URL, AN_UNDEFINED_URL } from 'react-native-dotenv';
  * @param {string} todosLength - The todo collection
  * @returns {undefined} - this doesn't directly return anything, but calls dispatch to set data
  */
-export function useTodos(dispatch, setFetched, todos) {
+export function useTodos(dispatch, setFetched) {
   /**
    * Since we are making an API call, which is a side-effect,
    * we will wrap this in a useEffect, which will re-render the

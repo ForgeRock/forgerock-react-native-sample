@@ -16,7 +16,7 @@ import Theme from '../theme/index';
 import { AppContext, useGlobalStateMgmt } from '../global-state';
 import { LoginRoutes, TodoRoutes } from '../navigation/routes';
 
-const { FRAuthBridge } = NativeModules;
+const { FRAuthSampleBridge } = NativeModules;
 
 function Navigation() {
   const stateMgmt = useGlobalStateMgmt({
@@ -40,7 +40,7 @@ function RootNavigator() {
   useEffect(() => {
     async function checkForToken() {
       try {
-        const token = await FRAuthBridge.getAccessToken();
+        const token = await FRAuthSampleBridge.getAccessToken();
         setAuthentication(Boolean(token));
       } catch (err) {
         console.log('the error', err);

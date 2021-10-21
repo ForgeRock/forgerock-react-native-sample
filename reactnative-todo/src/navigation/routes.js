@@ -18,13 +18,13 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 const Tab = createBottomTabNavigator();
-const { FRAuthBridge } = NativeModules;
+const { FRAuthSampleBridge } = NativeModules;
 
 function Logout() {
   const [{}, { setAuthentication }] = useContext(AppContext);
   useEffect(() => {
     async function logout() {
-      await FRAuthBridge.logout();
+      await FRAuthSampleBridge.logout();
       setAuthentication(false);
     }
     logout();

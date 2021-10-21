@@ -9,11 +9,8 @@
  */
 
 import { useEffect } from 'react';
-import { NativeModules } from 'react-native';
 import { request } from '../components/utilities/request';
 import { API_URL } from 'react-native-dotenv';
-
-const { FRAuthBridge } = NativeModules;
 
 /**
  * @function useTodos - A custom React hook for fetching todos from API

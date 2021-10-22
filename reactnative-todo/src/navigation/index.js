@@ -43,7 +43,7 @@ function RootNavigator() {
         const token = await FRAuthBridge.getAccessToken();
         setAuthentication(Boolean(token));
       } catch (err) {
-        console.log('the error', err);
+	await FRAuthBridge.logout();
       }
     }
     checkForToken();

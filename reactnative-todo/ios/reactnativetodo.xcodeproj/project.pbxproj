@@ -21,6 +21,8 @@
 		6711265EEC030BB674824A26 /* libPods-reactnativetodo-reactnativetodoTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4789B7CAFDC19B00DD6B34DD /* libPods-reactnativetodo-reactnativetodoTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		9A4119D9271643FE006437AE /* libFRAuth.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A4119D8271643FE006437AE /* libFRAuth.a */; };
+		9A4119DB27164433006437AE /* FRAuthBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A4119DA27164433006437AE /* FRAuthBridge.m */; };
+		9A4119DE271644D0006437AE /* FRAuthBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4119DD271644D0006437AE /* FRAuthBridge.swift */; };
 		9A4119E227164806006437AE /* FRAuthConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9A4119E127164806006437AE /* FRAuthConfig.plist */; };
 		9A792748AE37468786E0BF99 /* OpenSans-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6A76370587A742A9990EF20C /* OpenSans-ExtraBold.ttf */; };
 		A4FD5EB3304346A9A52158FE /* OpenSans-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3527C54A1B204291874CF512 /* OpenSans-MediumItalic.ttf */; };
@@ -28,8 +30,6 @@
 		CD90078BB21D49DB9AF013C1 /* OpenSans-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CED6722D043B4655AA876073 /* OpenSans-BoldItalic.ttf */; };
 		D1ECA862CF4F41F683028B74 /* OpenSans-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 384508A089B7416CAB225603 /* OpenSans-Italic.ttf */; };
 		D7DB30BB611546848DEA6F9C /* OpenSans-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A08695FB2C7E436B9692021C /* OpenSans-SemiBold.ttf */; };
-		ECA3AFFA2722DB070070CCA6 /* FRAuthSampleBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = ECA3AFF82722DB070070CCA6 /* FRAuthSampleBridge.m */; };
-		ECA3AFFB2722DB070070CCA6 /* FRAuthSampleBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECA3AFF92722DB070070CCA6 /* FRAuthSampleBridge.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -79,7 +79,9 @@
 		91FB3ED83ED2B9DB0A186DC3 /* Pods-reactnativetodo-reactnativetodoTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-reactnativetodo-reactnativetodoTests.debug.xcconfig"; path = "Target Support Files/Pods-reactnativetodo-reactnativetodoTests/Pods-reactnativetodo-reactnativetodoTests.debug.xcconfig"; sourceTree = "<group>"; };
 		9340EE7F7BA54BA281C8141F /* OpenSans-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "OpenSans-Medium.ttf"; path = "../assets/fonts/OpenSans-Medium.ttf"; sourceTree = "<group>"; };
 		9A4119D8271643FE006437AE /* libFRAuth.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libFRAuth.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		9A4119DA27164433006437AE /* FRAuthBridge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = FRAuthBridge.m; path = reactnativetodo/FRAuthBridge.m; sourceTree = "<group>"; };
 		9A4119DC271644D0006437AE /* reactnativetodo-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "reactnativetodo-Bridging-Header.h"; sourceTree = "<group>"; };
+		9A4119DD271644D0006437AE /* FRAuthBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FRAuthBridge.swift; path = reactnativetodo/FRAuthBridge.swift; sourceTree = "<group>"; };
 		9A4119E127164806006437AE /* FRAuthConfig.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = FRAuthConfig.plist; path = reactnativetodo/FRAuthConfig.plist; sourceTree = "<group>"; };
 		A08695FB2C7E436B9692021C /* OpenSans-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "OpenSans-SemiBold.ttf"; path = "../assets/fonts/OpenSans-SemiBold.ttf"; sourceTree = "<group>"; };
 		B1195D1AD30545DAAB9491F2 /* OpenSans-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "OpenSans-Regular.ttf"; path = "../assets/fonts/OpenSans-Regular.ttf"; sourceTree = "<group>"; };
@@ -90,8 +92,6 @@
 		E559F24564C3498FBB49F1C9 /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
 		EBD9CF16AB924BEFA1E4EC55 /* OpenSans-LightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "OpenSans-LightItalic.ttf"; path = "../assets/fonts/OpenSans-LightItalic.ttf"; sourceTree = "<group>"; };
 		EC3E098FC2EF41099DB8D62F /* Entypo.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Entypo.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Entypo.ttf"; sourceTree = "<group>"; };
-		ECA3AFF82722DB070070CCA6 /* FRAuthSampleBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FRAuthSampleBridge.m; path = reactnativetodo/FRAuthSampleBridge.m; sourceTree = "<group>"; };
-		ECA3AFF92722DB070070CCA6 /* FRAuthSampleBridge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FRAuthSampleBridge.swift; path = reactnativetodo/FRAuthSampleBridge.swift; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -136,10 +136,10 @@
 		13B07FAE1A68108700A75B9A /* reactnativetodo */ = {
 			isa = PBXGroup;
 			children = (
-				ECA3AFF82722DB070070CCA6 /* FRAuthSampleBridge.m */,
-				ECA3AFF92722DB070070CCA6 /* FRAuthSampleBridge.swift */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
+				9A4119DA27164433006437AE /* FRAuthBridge.m */,
 				9A4119E127164806006437AE /* FRAuthConfig.plist */,
+				9A4119DD271644D0006437AE /* FRAuthBridge.swift */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
@@ -514,10 +514,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				ECA3AFFB2722DB070070CCA6 /* FRAuthSampleBridge.swift in Sources */,
+				9A4119DE271644D0006437AE /* FRAuthBridge.swift in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
-				ECA3AFFA2722DB070070CCA6 /* FRAuthSampleBridge.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
+				9A4119DB27164433006437AE /* FRAuthBridge.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

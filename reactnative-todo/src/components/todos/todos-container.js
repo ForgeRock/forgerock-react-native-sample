@@ -19,7 +19,7 @@ import { Loading } from '../utilities/loading';
 
 function TodoContainer() {
   const [fetching, setFetch] = useToggle(false);
-  const [todos, dispatch] = useReducer(reducer, []);
+  const [todos = [], dispatch] = useReducer(reducer, []);
 
   useTodos(dispatch, setFetch, todos);
 

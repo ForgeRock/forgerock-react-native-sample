@@ -9,7 +9,7 @@
  */
 import React, { useState } from 'react';
 import { NativeModules } from 'react-native';
-const { FRAuthBridge } = NativeModules;
+const { FRAuthSampleBridge } = NativeModules;
 
 /**
  * @function useStateMgmt - The global state/store for managing user authentication and page
@@ -44,7 +44,7 @@ export function useGlobalStateMgmt({ isAuthenticated = false }) {
        * any part of the application can log a user out. This is helpful when
        * APIs are called and we get a 401 response.
        ********************************************************************* */
-      await FRAuthBridge.logout();
+      await FRAuthSampleBridge.logout();
     }
 
     setAuthentication(value);

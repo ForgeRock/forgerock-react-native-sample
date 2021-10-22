@@ -13,7 +13,7 @@ import { FRStep } from '@forgerock/javascript-sdk';
 import { useNavigation } from '@react-navigation/native';
 import { AppContext } from '../global-state';
 
-const { FRAuthBridge } = NativeModules;
+const { FRAuthSampleBridge } = NativeModules;
 /**
  *
  * @param {Object} props - React props object
@@ -61,7 +61,7 @@ function useJourneyHandler({ action }) {
        * Details: Since we have successfully authenticated the user, we can now
        * get the OAuth2/OIDC tokens.
        * ******************************************************************** */
-      await FRAuthBridge.getAccessToken();
+      await FRAuthSampleBridge.getAccessToken();
 
       /** *********************************************************************
        * Native Bridge SDK INTEGRATION POINT
@@ -72,7 +72,7 @@ function useJourneyHandler({ action }) {
        * user info in the UI.
        ********************************************************************* */
       try {
-        await FRAuthBridge.getUserInfo();
+        await FRAuthSampleBridge.getUserInfo();
       } catch (err) {
         /**
          * Native Bridge SDK Integration Point
@@ -82,7 +82,7 @@ function useJourneyHandler({ action }) {
          *  If we do not, we are in a weird state and should force a logout and return an error
          *  requiring the user to login again.
          *  *************************************************************** */
-        await FRAuthBridge.logout();
+        await FRAuthSampleBridge.logout();
         setFormFailureMessage('error retrieving user');
       }
     }
@@ -101,7 +101,7 @@ function useJourneyHandler({ action }) {
              * Native Bridge SDK Integration Point
              * Call the login endpoint
              *************************************************************** */
-            const data = await FRAuthBridge.login();
+            const data = await FRAuthSampleBridge.login();
             const next = JSON.parse(data);
             /*****************************************************************
              * Javascript SDK Integration Point.
@@ -112,14 +112,14 @@ function useJourneyHandler({ action }) {
             setRenderStep(step);
             setSubmittingForm(false);
           } catch (err) {
-            const token = await FRAuthBridge.getAccessToken();
+            const token = await FRAuthSampleBridge.getAccessToken();
             if (token) {
               setAuthentication(true);
               navigation.navigate('Home');
             }
           }
         } else {
-          const data = await FRAuthBridge.register();
+          const data = await FRAuthSampleBridge.register();
           const next = JSON.parse(data);
           const step = new FRStep(next);
 
@@ -143,7 +143,7 @@ function useJourneyHandler({ action }) {
          * the next step to be returned, or a success or failure.
          ********************************************************************* */
         try {
-          const nextStep = await FRAuthBridge.next(
+          const nextStep = await FRAuthSampleBridge.next(
             JSON.stringify(renderStep.payload),
           );
           /**
@@ -184,7 +184,7 @@ function useJourneyHandler({ action }) {
            * in the catch block
            * ******************************************************************* */
           try {
-            const json = await FRAuthBridge.next(
+            const json = await FRAuthSampleBridge.next(
               JSON.stringify(submissionStep.payload),
             );
             const data = JSON.parse(json);

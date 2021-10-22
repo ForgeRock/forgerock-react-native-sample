@@ -13,7 +13,7 @@ import { NativeModules } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import Navigation from './navigation';
 
-const { FRAuthSampleBridge } = NativeModules;
+const { FRAuthBridge } = NativeModules;
 
 export default function App() {
   useEffect(() => {
@@ -24,7 +24,7 @@ export default function App() {
      * any other Native methods can be used
      ********************************************************************/
     async function start() {
-      await FRAuthSampleBridge.start();
+      await FRAuthBridge.start();
     }
     start();
   }, []);

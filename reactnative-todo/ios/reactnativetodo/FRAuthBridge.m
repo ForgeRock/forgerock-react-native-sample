@@ -1,5 +1,5 @@
 //
-//  FRAuthSampleBridge.m
+//  FRAuthBridge.m
 //  reactnativetodo
 //
 //  Created by ForgeRock on 10/12/21.
@@ -8,7 +8,7 @@
 #import <Foundation/Foundation.h>
 #import <React/RCTBridgeModule.h>
 
-@interface RCT_EXTERN_REMAP_MODULE(FRAuthSampleBridge, FRAuthSampleBridge, NSObject)
+@interface RCT_EXTERN_REMAP_MODULE(FRAuthBridge, FRAuthBridge, NSObject)
 
 //Used in the ReactNative Sample
 RCT_EXTERN_METHOD(start: (RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)

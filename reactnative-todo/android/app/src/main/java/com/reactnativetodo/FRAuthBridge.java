@@ -56,20 +56,20 @@ import java.util.List;
 import java.util.concurrent.Semaphore;
 
 
-public class FRAuthSampleBridge extends ReactContextBaseJavaModule {
+public class FRAuthBridge extends ReactContextBaseJavaModule {
     ReactApplicationContext context;
     Node currentNode;
     NodeListener listener;
     Promise reactNativePromise;
 
-    FRAuthSampleBridge(ReactApplicationContext context) {
+    FRAuthBridge(ReactApplicationContext context) {
         super(context);
         this.context = context;
     }
 
     @Override
     public String getName() {
-        return "FRAuthSampleBridge";
+        return "FRAuthBridge";
     }
 
 

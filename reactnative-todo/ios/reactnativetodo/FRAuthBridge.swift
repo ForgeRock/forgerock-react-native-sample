@@ -1,5 +1,5 @@
 //
-//  FRAuthSampleBridge.swift
+//  FRAuthBridge.swift
 //  reactnativetodo
 //
 //  Created by ForgeRock on 10/12/21.
@@ -10,8 +10,8 @@ import FRAuth
 import FRCore
 import UIKit
 
-@objc(FRAuthSampleBridge)
-public class FRAuthSampleBridge: NSObject {
+@objc(FRAuthBridge)
+public class FRAuthBridge: NSObject {
   var currentNode: Node?
   
   @objc static func requiresMainQueueSetup() -> Bool {

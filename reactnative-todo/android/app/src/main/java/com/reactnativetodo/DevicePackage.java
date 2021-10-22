@@ -22,7 +22,7 @@ public class DevicePackage implements ReactPackage {
             ReactApplicationContext reactContext) {
         List<NativeModule> modules = new ArrayList<>();
         //We import the module file here
-        modules.add(new FRAuthBridge(reactContext));
+        modules.add(new FRAuthSampleBridge(reactContext));
 
         return modules;
     }

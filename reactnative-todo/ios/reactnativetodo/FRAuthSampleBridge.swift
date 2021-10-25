@@ -1,8 +1,10 @@
-//
 //  FRAuthSampleBridge.swift
 //  reactnativetodo
 //
-//  Created by ForgeRock on 10/12/21.
+//  Copyright (c) 2021 ForgeRock. All rights reserved.
+//
+//  This software may be modified and distributed under the terms
+//  of the MIT license. See the LICENSE file for details.
 //
 
 import Foundation
@@ -24,8 +26,13 @@ public class FRAuthSampleBridge: NSObject {
     
     do {
       try FRAuth.start()
-      sleep(2)
-      resolve("SDK Initialized")
+      DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+        if(FRAuth.shared != nil) {
+          resolve("SDK Initialized")
+        } else {
+          resolve("SDK not Initialized. Please check the log for errors.")
+        }
+      }
     }
     catch {
       FRLog.e(error.localizedDescription)
@@ -107,54 +114,48 @@ public class FRAuthSampleBridge: NSObject {
         reject("Error", "UnkownError", error)
       }
       
-      let callbacksArray = responseObject!.callbacks ?? []
-      // If the array is empty there are no user inputs. This can happen in callbacks like the DeviceProfileCallback, that do not require user interaction.
-      // Other callbacks like SingleValueCallback, will return the user inputs in an array of dictionaries [[String:String]] with the keys: identifier and text
-      if callbacksArray.count == 0 {
-        for nodeCallback in node.callbacks {
-          if let thisCallback = nodeCallback as? DeviceProfileCallback {
-            let semaphore = DispatchSemaphore(value: 1)
-            semaphore.wait()
-            thisCallback.execute { _ in
-              semaphore.signal()
-            }
-          }
-        }
-      } else {
-        for (outerIndex, nodeCallback) in node.callbacks.enumerated() {
-          if let thisCallback = nodeCallback as? KbaCreateCallback {
-            for (innerIndex, rawCallback) in callbacksArray.enumerated() {
-              if let inputsArray = rawCallback.input, outerIndex == innerIndex {
-                for input in inputsArray {
-                  if let value = input.value!.value as? String {
-                    if input.name.contains("question") {
-                      thisCallback.setQuestion(value)
-                    } else {
-                      thisCallback.setAnswer(value)
-                    }
+      let callbacksArray = responseObject?.callbacks ?? []
+      
+      for (outerIndex, nodeCallback) in node.callbacks.enumerated() {
+        if let thisCallback = nodeCallback as? KbaCreateCallback {
+          for (innerIndex, rawCallback) in callbacksArray.enumerated() {
+            if let inputsArray = rawCallback.input, outerIndex == innerIndex {
+              for input in inputsArray {
+                if let value = input.value!.value as? String {
+                  if input.name.contains("question") {
+                    thisCallback.setQuestion(value)
+                  } else {
+                    thisCallback.setAnswer(value)
                   }
                 }
               }
             }
           }
-          if let thisCallback = nodeCallback as? SingleValueCallback {
-            for (innerIndex, rawCallback) in callbacksArray.enumerated() {
-              if let inputsArray = rawCallback.input, outerIndex == innerIndex, let value = inputsArray.first?.value {
-                switch value.originalType {
-                case .String:
-                  thisCallback.setValue(value.value as! String)
-                case .Int:
-                  thisCallback.setValue(value.value as! Int)
-                case .Double:
-                  thisCallback.setValue(value.value as! Double)
-                case .Bool:
-                  thisCallback.setValue(value.value as! Bool)
-                default:
-                  break
-                }
-                
+        }
+        if let thisCallback = nodeCallback as? SingleValueCallback {
+          for (innerIndex, rawCallback) in callbacksArray.enumerated() {
+            if let inputsArray = rawCallback.input, outerIndex == innerIndex, let value = inputsArray.first?.value {
+              switch value.originalType {
+              case .String:
+                thisCallback.setValue(value.value as! String)
+              case .Int:
+                thisCallback.setValue(value.value as! Int)
+              case .Double:
+                thisCallback.setValue(value.value as! Double)
+              case .Bool:
+                thisCallback.setValue(value.value as! Bool)
+              default:
+                break
               }
+              
             }
+          }
+        }
+        if let thisCallback = nodeCallback as? DeviceProfileCallback {
+          let semaphore = DispatchSemaphore(value: 1)
+          semaphore.wait()
+          thisCallback.execute { _ in
+            semaphore.signal()
           }
         }
       }
@@ -288,7 +289,7 @@ public struct FRNode: Encodable {
   var callbacks: [[String: Any]]
   
   private enum CodingKeys: String, CodingKey {
-      case frCallbacks, authId, authServiceId, stage, pageHeader, pageDescription
+    case frCallbacks, authId, authServiceId, stage, pageHeader, pageDescription
   }
   
   init(node: Node) {
@@ -489,17 +490,17 @@ public struct FlexibleType: Codable {
 }
 
 fileprivate extension Dictionary {
-    
-    /// Convert Dictionary to JSON string
-    /// - Throws: exception if dictionary cannot be converted to JSON data or when data cannot be converted to UTF8 string
-    /// - Returns: JSON string
-    func toJson() throws -> String {
-        let data = try JSONSerialization.data(withJSONObject: self)
-        if let string = String(data: data, encoding: .utf8) {
-            return string
-        }
-        throw NSError(domain: "Dictionary", code: 1, userInfo: ["message": "Data cannot be converted to .utf8 string"])
+  
+  /// Convert Dictionary to JSON string
+  /// - Throws: exception if dictionary cannot be converted to JSON data or when data cannot be converted to UTF8 string
+  /// - Returns: JSON string
+  func toJson() throws -> String {
+    let data = try JSONSerialization.data(withJSONObject: self)
+    if let string = String(data: data, encoding: .utf8) {
+      return string
     }
+    throw NSError(domain: "Dictionary", code: 1, userInfo: ["message": "Data cannot be converted to .utf8 string"])
+  }
 }
 
 fileprivate extension Array {
@@ -508,7 +509,7 @@ fileprivate extension Array {
   /// - Throws: exception if Array cannot be converted to JSON data or when data cannot be converted to UTF8 string
   /// - Returns: JSON string
   func toJson() throws -> String {
-      let data = try JSONSerialization.data(withJSONObject: self, options: [])
-      return String(data: data, encoding: .utf8)!
+    let data = try JSONSerialization.data(withJSONObject: self, options: [])
+    return String(data: data, encoding: .utf8)!
   }
 }

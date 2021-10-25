@@ -14,10 +14,18 @@ import { API_URL } from 'react-native-dotenv';
 const { FRAuthSampleBridge } = NativeModules;
 
 async function request(method, resource = '', body = null) {
-  const json = await FRAuthSampleBridge.getAccessToken();
-  const tokens = JSON.parse(json);
-  const { tokenType, value } = tokens;
+  /*****************************************************************
+   * NATIVE BRIDGE SDK INTEGRATION POINT
+   * Summary: Checking for access token to make request
+   * ------------------------------------------------------------------
+   *  Details: Here we are checking for an existing access token in order to make
+   *  a request for a protected resource.
+   *  *************************************************************** */
+
   try {
+    const json = await FRAuthSampleBridge.getAccessToken();
+    const tokens = JSON.parse(json);
+    const { tokenType, value } = tokens;
     const res = await fetch(`${API_URL}/todos/${resource}`, {
       method,
       body: body && JSON.stringify(body),
@@ -29,9 +37,11 @@ async function request(method, resource = '', body = null) {
     if (method === 'DELETE') return;
 
     const response = await res.json();
+
     return response;
   } catch (err) {
-    console.error(err);
+    console.error('in request', err);
+    FRAuthSampleBridge.logout();
   }
 }
 

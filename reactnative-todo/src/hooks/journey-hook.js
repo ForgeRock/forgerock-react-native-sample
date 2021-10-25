@@ -16,11 +16,14 @@ import { AppContext } from '../global-state';
 const { FRAuthSampleBridge } = NativeModules;
 /**
  *
- * @param {Object} props - React props object
- * @param {Object} props.action - Action object for a "reducer" pattern
- * @param {string} props.action.type - Action type string that represents the action
- * @param {Object} props.form - The form metadata object
- * @returns {Object} - React component object
+ *  @param {Object} { action: { type : 'login' | 'register' } }
+ *  @returns {Object} - {
+ *    formFailureMessage: string,
+ *    renderStep: Object<any>,
+ *    submittingForm: Boolean,
+ *    setSubmissionStep: React Hook Setter,
+ *    setSubmittingForm: React Hook Setter,
+ * };
  */
 function useJourneyHandler({ action }) {
   /**
@@ -41,7 +44,8 @@ function useJourneyHandler({ action }) {
   // Processing submission
   const [submittingForm, setSubmittingForm] = useState(false);
   // User state
-  const [, { setAuthentication }] = useContext(AppContext);
+  const [_, setAuthentication] = useContext(AppContext);
+
   const navigation = useNavigation();
 
   /**
@@ -54,28 +58,28 @@ function useJourneyHandler({ action }) {
      * @returns {undefined}
      */
     async function getOAuth() {
-      /** *********************************************************************
-       * Native Bridge SDK INTEGRATION POINT
-       * Summary: Get OAuth/OIDC tokens with Authorization Code Flow w/PKCE.
-       * ----------------------------------------------------------------------
-       * Details: Since we have successfully authenticated the user, we can now
-       * get the OAuth2/OIDC tokens.
-       * ******************************************************************** */
-      await FRAuthSampleBridge.getAccessToken();
-
-      /** *********************************************************************
-       * Native Bridge SDK INTEGRATION POINT
-       * Summary: Call the user info endpoint for some basic user data.
-       * ----------------------------------------------------------------------
-       * Details: This is an OAuth2 call that returns user information with a
-       * valid access token. This is optional and only used for displaying
-       * user info in the UI.
-       ********************************************************************* */
       try {
+        /** *********************************************************************
+         * NATIVE BRIDGE SDK INTEGRATION POINT
+         * Summary: Get OAuth/OIDC tokens with Authorization Code Flow w/PKCE.
+         * ----------------------------------------------------------------------
+         * Details: Since we have successfully authenticated the user, we can now
+         * get the OAuth2/OIDC tokens.
+         * ******************************************************************** */
+        await FRAuthSampleBridge.getAccessToken();
+
+        /** *********************************************************************
+         * NATIVE BRIDGE SDK INTEGRATION POINT
+         * Summary: Call the user info endpoint for some basic user data.
+         * ----------------------------------------------------------------------
+         * Details: This is an OAuth2 call that returns user information with a
+         * valid access token. This is optional and only used for displaying
+         * user info in the UI.
+         ********************************************************************* */
         await FRAuthSampleBridge.getUserInfo();
       } catch (err) {
         /**
-         * Native Bridge SDK Integration Point
+         * NATIVE BRIDGE SDK INTEGRATION POINT
          * Summary: Logging out user if we fail to get user info at this point
          * ------------------------------------------------------------------
          *  Details: At this point we should have user information returned.
@@ -98,20 +102,38 @@ function useJourneyHandler({ action }) {
         if (action.type === 'login') {
           try {
             /*****************************************************************
-             * Native Bridge SDK Integration Point
-             * Call the login endpoint
+             * NATIVE BRIDGE SDK INTEGRATION POINT
+             * Summary: Call the login endpoint
+             * --------------------------------------------------------------
+             * Details: When we have no current 'renderStep', that means we have no data to render.
+             * Given our action type, we know we want to login so we can call the login method
+             * in order to get back our data to render for our login screen.
              *************************************************************** */
             const data = await FRAuthSampleBridge.login();
             const next = JSON.parse(data);
             /*****************************************************************
-             * Javascript SDK Integration Point.
-             * Convert Response to a FRCallback
+             * JAVASCRIPT SDK INTEGRATION POINT
+             * Summary: Convert Response to an FRStep
+             * --------------------------------------------------------------
+             * This is a helper method provided by the Javascript SDK.
+             * It will decorate the callbacks array items (each object), with
+             * helper methods on the prototype for each object.
+             * In return, much of the state management
+             * is taken care of by the SDK layer.
              *************************************************************** */
             const step = new FRStep(next);
 
             setRenderStep(step);
             setSubmittingForm(false);
           } catch (err) {
+            /** *********************************************************************
+             * NATIVE BRIDGE SDK INTEGRATION POINT
+             * Summary: Get OAuth/OIDC tokens with Authorization Code Flow w/PKCE.
+             * ----------------------------------------------------------------------
+             * Details: Since we have successfully authenticated the user, we can now
+             * get the OAuth2/OIDC tokens.
+             * ******************************************************************** */
+
             const token = await FRAuthSampleBridge.getAccessToken();
             if (token) {
               setAuthentication(true);
@@ -119,8 +141,27 @@ function useJourneyHandler({ action }) {
             }
           }
         } else {
+          /*****************************************************************
+           * NATIVE BRIDGE SDK INTEGRATION POINT
+           * Summary: Call the register endpoint
+           * --------------------------------------------------------------
+           * Details: When we have no current 'renderStep', that means we have no data to render.
+           * Given our action type, we know we want to register a user, so we can call the login method
+           * in order to get back our data to render for our register screen.
+           *************************************************************** */
           const data = await FRAuthSampleBridge.register();
           const next = JSON.parse(data);
+
+          /*****************************************************************
+           * JAVASCRIPT SDK INTEGRATION POINT
+           * Summary: Convert Response to an FRStep
+           * --------------------------------------------------------------
+           * This is a helper method provided by the Javascript SDK.
+           * It will decorate the callbacks array items (each object), with
+           * helper methods on the prototype for each object.
+           * In return, much of the state management
+           * is taken care of by the SDK layer.
+           *************************************************************** */
           const step = new FRStep(next);
 
           setRenderStep(step);
@@ -136,7 +177,7 @@ function useJourneyHandler({ action }) {
         const previousPayload = prev?.payload;
 
         /** *********************************************************************
-         * Native Bridge SDK INTEGRATION POINT
+         * NATIVE BRIDGE SDK INTEGRATION POINT
          * Summary: Call the SDK's next method to submit the current step.
          * ----------------------------------------------------------------------
          * Details: This calls the next method with the previous step, expecting
@@ -177,7 +218,7 @@ function useJourneyHandler({ action }) {
           setFormFailureMessage(err.message);
 
           /** *******************************************************************
-           * Native Bridge SDK INTEGRATION POINT
+           * NATIVE BRIDGE SDK INTEGRATION POINT
            * Summary: Call next with submission step payload
            * --------------------------------------------------------------------
            * Details: Because LoginFailure throws, we have to handle the failure
@@ -188,7 +229,16 @@ function useJourneyHandler({ action }) {
               JSON.stringify(submissionStep.payload),
             );
             const data = JSON.parse(json);
-
+            /*****************************************************************
+             * JAVASCRIPT SDK INTEGRATION POINT
+             * Summary: Convert Response to an FRStep
+             * --------------------------------------------------------------
+             * This is a helper method provided by the Javascript SDK.
+             * It will decorate the callbacks array items (each object), with
+             * helper methods on the prototype for each object.
+             * In return, much of the state management
+             * is taken care of by the SDK layer.
+             *************************************************************** */
             const newStep = new FRStep({
               ...data,
               sessionToken: JSON.parse(data.sessionToken),

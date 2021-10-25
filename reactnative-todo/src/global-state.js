@@ -14,10 +14,7 @@ const { FRAuthSampleBridge } = NativeModules;
 /**
  * @function useStateMgmt - The global state/store for managing user authentication and page
  * @param {Object} props - The object representing React's props
- * @param {Object} props.email - User's email
  * @param {Object} props.isAuthenticated - Boolean value of user's auth status
- * @param {Object} props.prefersDarkTheme - User theme setting
- * @param {Object} props.username - User's username
  * @returns {Array} - Global state values and state methods
  */
 export function useGlobalStateMgmt({ isAuthenticated = false }) {
@@ -37,7 +34,7 @@ export function useGlobalStateMgmt({ isAuthenticated = false }) {
   async function setAuthenticationWrapper(value) {
     if (value === false) {
       /** *********************************************************************
-       * SDK INTEGRATION POINT
+       * NATIVE BRIDGE SDK INTEGRATION POINT
        * Summary: Logout, end session and revoke tokens
        * ----------------------------------------------------------------------
        * Details: Since this method is a global method via the Context API,
@@ -52,14 +49,7 @@ export function useGlobalStateMgmt({ isAuthenticated = false }) {
   /**
    * returns an array with state object as index zero and setters as index one
    */
-  return [
-    {
-      isAuthenticated: authenticated,
-    },
-    {
-      setAuthentication: setAuthenticationWrapper,
-    },
-  ];
+  return [authenticated, setAuthenticationWrapper];
 }
 
 /**

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 - 2021 ForgeRock. All rights reserved.
+ * Copyright (c) 2021 ForgeRock. All rights reserved.
  *
  * This software may be modified and distributed under the terms
  * of the MIT license. See the LICENSE file for details.
@@ -56,20 +56,20 @@ import java.util.List;
 import java.util.concurrent.Semaphore;
 
 
-public class FRAuthBridge extends ReactContextBaseJavaModule {
+public class FRAuthSampleBridge extends ReactContextBaseJavaModule {
     ReactApplicationContext context;
     Node currentNode;
     NodeListener listener;
     Promise reactNativePromise;
 
-    FRAuthBridge(ReactApplicationContext context) {
+    FRAuthSampleBridge(ReactApplicationContext context) {
         super(context);
         this.context = context;
     }
 
     @Override
     public String getName() {
-        return "FRAuthBridge";
+        return "FRAuthSampleBridge";
     }
 
 
@@ -164,10 +164,53 @@ public class FRAuthBridge extends ReactContextBaseJavaModule {
         Gson gson= new Gson();
         Response responseObj = gson.fromJson(response,Response.class);
         if (responseObj != null) {
-            if (responseObj.callbacks.isEmpty()) {
-                for (Callback callback : currentNode.getCallbacks()) {
-                    String currentCallbackType = callback.getType();
-                    if (currentCallbackType.equals("DeviceProfileCallback")) {
+            List<Callback> callbacksList = currentNode.getCallbacks();
+            for(int i = 0; i < callbacksList.size(); i++) {
+                Object nodeCallback = callbacksList.get(i);
+
+                for(int j = 0; j < responseObj.callbacks.size(); j++) {
+                    RawCallback callback = responseObj.callbacks.get(j);
+                    String currentCallbackType = callback.type;
+                    RawInput input = callback.input.get(0);
+                    if ((currentCallbackType.equals("NameCallback")) && i==j) {
+                        currentNode.getCallback(NameCallback.class).setName((String) input.value);
+                    }
+                    if ((currentCallbackType.equals("ValidatedCreateUsernameCallback")) && i==j) {
+                        currentNode.getCallback(ValidatedUsernameCallback.class).setUsername((String) input.value);
+                    }
+                    if ((currentCallbackType.equals("ValidatedCreatePasswordCallback")) && i==j) {
+                        String password = (String) input.value;
+                        currentNode.getCallback(ValidatedPasswordCallback.class).setPassword(password.toCharArray());
+                    }
+                    if ((currentCallbackType.equals("PasswordCallback")) && i==j) {
+                        String password = (String) input.value;
+                        currentNode.getCallback(PasswordCallback.class).setPassword(password.toCharArray());
+                    }
+                    if ((currentCallbackType.equals("ChoiceCallback")) && i==j) {
+                        currentNode.getCallback(ChoiceCallback.class).setSelectedIndex((Integer) input.value);
+                    }
+                    if ((currentCallbackType.equals("KbaCreateCallback")) && i==j) {
+                        for (RawInput rawInput : callback.input) {
+                            if (rawInput.name.contains("question")) {
+                                currentNode.getCallback(KbaCreateCallback.class).setSelectedQuestion((String) rawInput.value);
+                            } else {
+                                currentNode.getCallback(KbaCreateCallback.class).setSelectedAnswer((String) rawInput.value);
+                            }
+                        }
+                    }
+                    if ((currentCallbackType.equals("StringAttributeInputCallback")) && i==j) {
+                        StringAttributeInputCallback stringAttributeInputCallback = (StringAttributeInputCallback) nodeCallback;
+                        stringAttributeInputCallback.setValue((String) input.value);
+                    }
+                    if ((currentCallbackType.equals("BooleanAttributeInputCallback")) && i==j) {
+                        BooleanAttributeInputCallback boolAttributeInputCallback = (BooleanAttributeInputCallback) nodeCallback;
+                        boolAttributeInputCallback.setValue((Boolean) input.value);
+                    }
+                    if ((currentCallbackType.equals("TermsAndConditionsCallback")) && i==j) {
+                        TermsAndConditionsCallback tcAttributeInputCallback = (TermsAndConditionsCallback) nodeCallback;
+                        tcAttributeInputCallback.setAccept((Boolean) input.value);
+                    }
+                    if (currentCallbackType.equals("DeviceProfileCallback") && i==j) {
                         final Semaphore available = new Semaphore(1, true);
                         available.acquire();
                         currentNode.getCallback(DeviceProfileCallback.class).execute(context, new FRListener<Void>() {
@@ -184,56 +227,6 @@ public class FRAuthBridge extends ReactContextBaseJavaModule {
                             }
                         });
                     }
-                }
-            } else {
-                List<Callback> callbacksList = currentNode.getCallbacks();
-                for(int i = 0; i < callbacksList.size(); i++) {
-                    Object nodeCallback = callbacksList.get(i);
-
-                    for(int j = 0; j < responseObj.callbacks.size(); j++) {
-                        RawCallback callback = responseObj.callbacks.get(j);
-                        String currentCallbackType = callback.type;
-                        RawInput input = callback.input.get(0);
-                        if ((currentCallbackType.equals("NameCallback")) && i==j) {
-                            currentNode.getCallback(NameCallback.class).setName((String) input.value);
-                        }
-                        if ((currentCallbackType.equals("ValidatedCreateUsernameCallback")) && i==j) {
-                            currentNode.getCallback(ValidatedUsernameCallback.class).setUsername((String) input.value);
-                        }
-                        if ((currentCallbackType.equals("ValidatedCreatePasswordCallback")) && i==j) {
-                            String password = (String) input.value;
-                            currentNode.getCallback(ValidatedPasswordCallback.class).setPassword(password.toCharArray());
-                        }
-                        if ((currentCallbackType.equals("PasswordCallback")) && i==j) {
-                            String password = (String) input.value;
-                            currentNode.getCallback(PasswordCallback.class).setPassword(password.toCharArray());
-                        }
-                        if ((currentCallbackType.equals("ChoiceCallback")) && i==j) {
-                            currentNode.getCallback(ChoiceCallback.class).setSelectedIndex((Integer) input.value);
-                        }
-                        if ((currentCallbackType.equals("KbaCreateCallback")) && i==j) {
-                            for (RawInput rawInput : callback.input) {
-                                if (rawInput.name.contains("question")) {
-                                    currentNode.getCallback(KbaCreateCallback.class).setSelectedQuestion((String) rawInput.value);
-                                } else {
-                                    currentNode.getCallback(KbaCreateCallback.class).setSelectedAnswer((String) rawInput.value);
-                                }
-                            }
-                        }
-                        if ((currentCallbackType.equals("StringAttributeInputCallback")) && i==j) {
-                            StringAttributeInputCallback stringAttributeInputCallback = (StringAttributeInputCallback) nodeCallback;
-                            stringAttributeInputCallback.setValue((String) input.value);
-                        }
-                        if ((currentCallbackType.equals("BooleanAttributeInputCallback")) && i==j) {
-                            BooleanAttributeInputCallback boolAttributeInputCallback = (BooleanAttributeInputCallback) nodeCallback;
-                            boolAttributeInputCallback.setValue((Boolean) input.value);
-                        }
-                        if ((currentCallbackType.equals("TermsAndConditionsCallback")) && i==j) {
-                            TermsAndConditionsCallback tcAttributeInputCallback = (TermsAndConditionsCallback) nodeCallback;
-                            tcAttributeInputCallback.setAccept((Boolean) input.value);
-                        }
-                    }
-
                 }
             }
         } else {

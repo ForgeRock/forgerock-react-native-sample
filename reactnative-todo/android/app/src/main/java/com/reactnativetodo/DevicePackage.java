@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) 2021 ForgeRock. All rights reserved.
+ *
+ * This software may be modified and distributed under the terms
+ * of the MIT license. See the LICENSE file for details.
+ */
+
 package com.reactnativetodo;
 
 import com.facebook.react.ReactPackage;
@@ -22,7 +29,7 @@ public class DevicePackage implements ReactPackage {
             ReactApplicationContext reactContext) {
         List<NativeModule> modules = new ArrayList<>();
         //We import the module file here
-        modules.add(new FRAuthBridge(reactContext));
+        modules.add(new FRAuthSampleBridge(reactContext));
 
         return modules;
     }

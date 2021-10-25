@@ -11,15 +11,14 @@
 import { NativeModules } from 'react-native';
 import { API_URL } from 'react-native-dotenv';
 
-const { FRAuthBridge } = NativeModules;
+const { FRAuthSampleBridge } = NativeModules;
 
 async function request(method, resource = '', body = null) {
-  console.log('API URL' + API_URL);
-  const json = await FRAuthBridge.getAccessToken();
+  const json = await FRAuthSampleBridge.getAccessToken();
   const tokens = JSON.parse(json);
   const { tokenType, value } = tokens;
   try {
-    const res = await fetch(`${API_URL}todos/${resource}`, {
+    const res = await fetch(`${API_URL}/todos/${resource}`, {
       method,
       body: body && JSON.stringify(body),
       headers: {

@@ -16,7 +16,7 @@ import Theme from '../theme/index';
 import { AppContext, useGlobalStateMgmt } from '../global-state';
 import { LoginRoutes, TodoRoutes } from '../navigation/routes';
 
-const { FRAuthBridge } = NativeModules;
+const { FRAuthSampleBridge } = NativeModules;
 
 function Navigation() {
   const stateMgmt = useGlobalStateMgmt({
@@ -40,10 +40,18 @@ function RootNavigator() {
   useEffect(() => {
     async function checkForToken() {
       try {
-        const token = await FRAuthBridge.getAccessToken();
+        const token = await FRAuthSampleBridge.getAccessToken();
         setAuthentication(Boolean(token));
       } catch (err) {
-        console.log('the error', err);
+	/**
+         * Native Bridge SDK Integration Point
+         * Summary: Logging out user if we fail to get user info at this point
+         * ------------------------------------------------------------------
+         *  Details: If we throw here, we want to clear out any state so that
+	 *  we can continue to re render the page with a clean state
+         *  *************************************************************** */
+
+	await FRAuthSampleBridge.logout();
       }
     }
     checkForToken();

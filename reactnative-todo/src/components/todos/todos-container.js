@@ -8,8 +8,8 @@
  * of the MIT license. See the LICENSE file for details.
  */
 import React, { useReducer } from 'react';
-import { Box, Center, Heading, ScrollView, Text } from 'native-base';
-import { Todos } from './todo';
+import { VStack, Box, Heading, ScrollView, Text } from 'native-base';
+import { Todo } from './todo';
 import { TodoInput } from './todo-input';
 import { useToggle } from '../../hooks/use-toggle';
 import { useTodos } from '../../hooks/use-todos';
@@ -21,7 +21,7 @@ function TodoContainer() {
   const [fetching, setFetch] = useToggle(false);
   const [todos = [], dispatch] = useReducer(reducer, []);
 
-  useTodos(dispatch, setFetch, todos);
+  useTodos(dispatch, setFetch);
 
   const editTodo = async ({ _id, title }) => {
     dispatch({ type: 'edit-todo', payload: { _id, title } });
@@ -54,12 +54,17 @@ function TodoContainer() {
           Create and manage your todos
         </Text>
         <TodoInput todos={todos} dispatch={dispatch} />
-        <Todos
-          todos={todos}
-          editTodo={editTodo}
-          handleDelete={handleDelete}
-          handleStatusChange={handleStatusChange}
-        />
+        <VStack>
+          {todos.map((todo) => (
+            <Todo
+              todo={todo}
+              key={todo?._id}
+              editTodo={editTodo}
+              handleDelete={handleDelete}
+              handleStatusChange={handleStatusChange}
+            />
+          ))}
+        </VStack>
       </Box>
     </ScrollView>
   );

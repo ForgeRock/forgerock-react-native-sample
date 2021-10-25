@@ -49,10 +49,7 @@ export function useGlobalStateMgmt({ isAuthenticated = false }) {
   /**
    * returns an array with state object as index zero and setters as index one
    */
-  return [
-       authenticated,
-       setAuthenticationWrapper,
-  ];
+  return [authenticated, setAuthenticationWrapper];
 }
 
 /**

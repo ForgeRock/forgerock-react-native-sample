@@ -10,7 +10,6 @@
 
 import { useEffect } from 'react';
 import { request } from '../components/utilities/request';
-import { API_URL } from 'react-native-dotenv';
 
 /**
  * @function useTodos - A custom React hook for fetching todos from API

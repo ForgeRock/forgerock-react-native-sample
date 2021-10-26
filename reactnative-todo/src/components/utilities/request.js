@@ -9,8 +9,6 @@
  */
 
 import { NativeModules } from 'react-native';
-import { API_URL } from 'react-native-dotenv';
-
 const { FRAuthSampleBridge } = NativeModules;
 
 async function request(method, resource = '', body = null) {
@@ -18,7 +16,8 @@ async function request(method, resource = '', body = null) {
   const tokens = JSON.parse(json);
   const { tokenType, value } = tokens;
   try {
-    const res = await fetch(`${API_URL}/todos/${resource}`, {
+    // edit the url here in fetch with the url for your server
+    const res = await fetch(`https://api.example.com:9443/todos/${resource}`, {
       method,
       body: body && JSON.stringify(body),
       headers: {
@@ -27,11 +26,12 @@ async function request(method, resource = '', body = null) {
       },
     });
     if (method === 'DELETE') return;
-
+    if (!res.ok) throw new Error(`Status ${res.status}: API request failed`);
     const response = await res.json();
+
     return response;
   } catch (err) {
-    console.error(err);
+    console.error(err, err.message);
   }
 }
 

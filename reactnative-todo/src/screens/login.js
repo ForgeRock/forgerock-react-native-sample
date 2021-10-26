@@ -8,7 +8,7 @@
  * of the MIT license. See the LICENSE file for details.
  */
 
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Form } from '../components/journey/form';
 
 function Login() {

@@ -18,10 +18,16 @@ const { FRAuthSampleBridge } = NativeModules;
 export default function App() {
   useEffect(() => {
     /* *******************************************************************
-     * Native Bridge SDK Integration
-     * It's important to start the FR SDK at the root level!
+     * NATIVE BRIDGE SDK INTEGRATION
+     * Summary: Call Start Early!
+     * -------------------------------------------------------------------
+     * Details: It's important to start the FR SDK at the root level!
      * Start is needed to be called and resolved before
      * any other Native methods can be used
+     *
+     * use `start` as early on as possible!
+     *
+     *
      ********************************************************************/
     async function start() {
       await FRAuthSampleBridge.start();

@@ -12,10 +12,18 @@ import { NativeModules } from 'react-native';
 const { FRAuthSampleBridge } = NativeModules;
 
 async function request(method, resource = '', body = null) {
-  const json = await FRAuthSampleBridge.getAccessToken();
-  const tokens = JSON.parse(json);
-  const { tokenType, value } = tokens;
+  /*****************************************************************
+   * NATIVE BRIDGE SDK INTEGRATION POINT
+   * Summary: Checking for access token to make request
+   * ------------------------------------------------------------------
+   *  Details: Here we are checking for an existing access token in order to make
+   *  a request for a protected resource.
+   *  *************************************************************** */
+
   try {
+    const json = await FRAuthSampleBridge.getAccessToken();
+    const tokens = JSON.parse(json);
+    const { tokenType, value } = tokens;
     // edit the url here in fetch with the url for your server
     const res = await fetch(`https://api.example.com:9443/todos/${resource}`, {
       method,
@@ -31,7 +39,8 @@ async function request(method, resource = '', body = null) {
 
     return response;
   } catch (err) {
-    console.error(err, err.message);
+    console.error('in request', err);
+    FRAuthSampleBridge.logout();
   }
 }
 

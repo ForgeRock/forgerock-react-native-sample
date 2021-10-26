@@ -17,7 +17,7 @@ import { TextField } from './text-field';
 function mapCallbacksToComponents(cb, idx) {
   const name = cb?.payload?.input?.[0].name;
   /** *********************************************************************
-   * Javascript SDK INTEGRATION POINT
+   * JAVASCRIPT SDK INTEGRATION POINT
    * Summary: SDK callback method for getting the callback type
    * ----------------------------------------------------------------------
    * Details: This method is helpful in quickly identifying the callback

@@ -12,6 +12,15 @@ import { FormControl, Input } from 'native-base';
 import { handleFailedPolicies } from '../utilities/failed-policies';
 
 const TextField = ({ callback }) => {
+  /******************************************************************** 
+   * JAVASCRIPT SDK INTEGRATION POINT
+   * Summary: Utilize Callback methods
+   * ------------------------------------------------------------------
+   *  Details: Because we wrap our responses in FRStep using the Javascript SDK
+   *  we have access to helper methods to set, and retrieve information from our response.
+   *  Referencing these helper methods allows us to avoid managing the state
+   *  in our own application and leverage the SDK to do so
+   *  *************************************************************** */
   const error = handleFailedPolicies(callback.getFailedPolicies());
   const isRequired = callback.isRequired ? callback.isRequired() : false;
   const label = callback.getPrompt();

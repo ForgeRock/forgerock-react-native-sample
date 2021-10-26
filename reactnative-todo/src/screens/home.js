@@ -25,12 +25,12 @@ function Home() {
           About this project
         </Heading>
         <Text fontSize="md" mt={3}>
-          About this project The purpose of this sample web app is to
-          demonstrate how the ForgeRock JavaScript SDK is implemented within a
-          fully-functional application using a popular framework. The source
-          code for this project can be found on Github and run locally for
-          experimentation. For more on our SDKs, you can find our official SDK
-          documentation here.
+          The purpose of this sample app is to demonstrate how the ForgeRock
+          SDKs can be leveraged within a fully-functional React Native
+          application. Included in this sample app is a sample bridging layer
+          for connecting the native ForgeRock modules (Android and iOS) with the
+          React Native layer along with a "light" use of the JavaScript SDK for
+          better ergonomics.
         </Text>
       </Box>
     </ScrollView>

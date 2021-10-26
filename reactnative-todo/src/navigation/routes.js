@@ -21,8 +21,16 @@ const Tab = createBottomTabNavigator();
 const { FRAuthSampleBridge } = NativeModules;
 
 function Logout() {
-  const [{}, { setAuthentication }] = useContext(AppContext);
+  const [, setAuthentication] = useContext(AppContext);
   useEffect(() => {
+    /** *********************************************************************
+     * NATIVE BRIDGE SDK INTEGRATION POINT
+     * Summary: Call Logout
+     * ----------------------------------------------------------------------
+     * Details: We can utilize the logout method to completely 
+     * revoke existing access artifacts on ForgeRock 
+     * ******************************************************************** */
+
     async function logout() {
       await FRAuthSampleBridge.logout();
       setAuthentication(false);

@@ -11,6 +11,16 @@ import React, { useState } from 'react';
 import { FormControl, Input, Select } from 'native-base';
 
 function KBA({ callback }) {
+  /******************************************************************** 
+   * JAVASCRIPT SDK INTEGRATION POINT
+   * Summary: Utilize Callback methods
+   * ------------------------------------------------------------------
+   *  Details: Because we wrap our responses in FRStep using the Javascript SDK
+   *  we have access to helper methods to set, and retrieve information from our response.
+   *  Referencing these helper methods allows us to avoid managing the state
+   *  in our own application and leverage the SDK to do so
+   *  *************************************************************** */
+
   const [selectedQuestion, setAns] = useState('');
   const updateQuestion = (question) => {
     setAns(question);

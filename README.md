@@ -12,14 +12,14 @@ ForgeRock protected native/hybrid application using React Native and the ForgeRo
 6. `cd ios`
 7. `pod install`
 8. `cd ..`
-9. Create the `.env` file from the `.env.example` file
+9. Create the `.env.js` file from the `.env.example.js` file
 
 Once the above is done, start the build in Xcode using iPhone 12 or higher
 
 ## Troubleshooting
 
 1. Make sure `libFRAuth.a` is added to your Target's "Frameworks, Libraries, and Embedded Content"
-2. Make sure you have a `.env` file with valid values
+2. Make sure you have a `.env.js` file with valid values
 3. Make sure the Metro server is running; `npx react-native start` if you want to run it manually
 4. Bridge code as been altered, so be aware of name changes
 5. If you get this error: 

@@ -1,17 +1,29 @@
-const API_URL = "" 
-const AM_URL = ""
-const APP_URL = ""
-const DEBUGGER_OFF = true
-const DEVELOPMENT = true
-const JOURNEY_LOGIN = ""
-const JOURNEY_REGISTER = "" 
-const SEC_KEY_FILE = ""
-const SEC_CERT_FILE = ""
-const REALM_PATH = ""
-const REST_OAUTH_CLIENT = ""
-const REST_OAUTH_SECRET = ""
-const WEB_OAUTH_CLIENT = ""
-const PORT =  ""
+const API_URL = '';
+const AM_URL = '';
+const DEBUGGER_OFF = true;
+const DEVELOPMENT = true;
+const JOURNEY_LOGIN = '';
+const JOURNEY_REGISTER = '';
+const SEC_KEY_FILE = '';
+const SEC_CERT_FILE = '';
+const REALM_PATH = '';
+const REST_OAUTH_CLIENT = '';
+const REST_OAUTH_SECRET = '';
+const WEB_OAUTH_CLIENT = '';
+const PORT = '';
 
-
-export { API_URL, AM_URL, APP_URL, DEBUGGER_OFF, DEVELOPMENT, JOURNEY_LOGIN, JOURNEY_REGISTER, SEC_KEY_FILE, SEC_CERT_FILE, REALM_PATH, REST_OAUTH_CLIENT, REST_OAUTH_SECRET, WEB_OAUTH_CLIENT };
+export {
+  API_URL,
+  AM_URL,
+  DEBUGGER_OFF,
+  DEVELOPMENT,
+  JOURNEY_LOGIN,
+  JOURNEY_REGISTER,
+  SEC_KEY_FILE,
+  SEC_CERT_FILE,
+  REALM_PATH,
+  REST_OAUTH_CLIENT,
+  REST_OAUTH_SECRET,
+  WEB_OAUTH_CLIENT,
+  PORT,
+};

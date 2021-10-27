@@ -54,44 +54,6 @@ function useJourneyHandler({ action }) {
    */
   useEffect(() => {
     /**
-     * @function getOAuth - The function to call when we get a LoginSuccess
-     * @returns {undefined}
-     */
-    async function getOAuth() {
-      try {
-        /** *********************************************************************
-         * NATIVE BRIDGE SDK INTEGRATION POINT
-         * Summary: Get OAuth/OIDC tokens with Authorization Code Flow w/PKCE.
-         * ----------------------------------------------------------------------
-         * Details: Since we have successfully authenticated the user, we can now
-         * get the OAuth2/OIDC tokens.
-         * ******************************************************************** */
-        await FRAuthSampleBridge.getAccessToken();
-
-        /** *********************************************************************
-         * NATIVE BRIDGE SDK INTEGRATION POINT
-         * Summary: Call the user info endpoint for some basic user data.
-         * ----------------------------------------------------------------------
-         * Details: This is an OAuth2 call that returns user information with a
-         * valid access token. This is optional and only used for displaying
-         * user info in the UI.
-         ********************************************************************* */
-        await FRAuthSampleBridge.getUserInfo();
-      } catch (err) {
-        /**
-         * NATIVE BRIDGE SDK INTEGRATION POINT
-         * Summary: Logging out user if we fail to get user info at this point
-         * ------------------------------------------------------------------
-         *  Details: At this point we should have user information returned.
-         *  If we do not, we are in a weird state and should force a logout and return an error
-         *  requiring the user to login again.
-         *  *************************************************************** */
-        await FRAuthSampleBridge.logout();
-        setFormFailureMessage('error retrieving user');
-      }
-    }
-
-    /**
      * @function getStep - The function for calling AM with a previous step to get a new step
      * @param {Object} prev - This is the previous step that should contain the input for AM
      * @returns {undefined}
@@ -193,7 +155,14 @@ function useJourneyHandler({ action }) {
            */
           if (nextStep.type === 'LoginSuccess') {
             // User is authenticated, now call for OAuth tokens
-            getOAuth();
+
+            /** *********************************************************************
+             * Native Bridge SDK INTEGRATION POINT
+             * ----------------------------------------------------------------------
+             * Details: This call is just to "prove" that we have successfully completed the oauth flow
+             * and gives us the ability to present user information to the screen. It is completely optional
+             * ********************************************************************* */
+            await FRAuthSampleBridge.getUserInfo();
             setAuthentication(true);
             navigation.navigate('Home');
           } else {

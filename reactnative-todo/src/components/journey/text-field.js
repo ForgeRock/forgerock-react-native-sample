@@ -12,7 +12,7 @@ import { FormControl, Input } from 'native-base';
 import { handleFailedPolicies } from '../utilities/failed-policies';
 
 const TextField = ({ callback }) => {
-  /******************************************************************** 
+  /********************************************************************
    * JAVASCRIPT SDK INTEGRATION POINT
    * Summary: Utilize Callback methods
    * ------------------------------------------------------------------
@@ -21,16 +21,25 @@ const TextField = ({ callback }) => {
    *  Referencing these helper methods allows us to avoid managing the state
    *  in our own application and leverage the SDK to do so
    *  *************************************************************** */
-  const error = handleFailedPolicies(callback.getFailedPolicies());
+  const error = handleFailedPolicies(
+    callback.getFailedPolicies ? callback.getFailedPolicies() : [],
+  );
   const isRequired = callback.isRequired ? callback.isRequired() : false;
   const label = callback.getPrompt();
+  const setText = (text) => callback.setInputValue(text);
   return (
     <FormControl isRequired={isRequired} isInvalid={error}>
       <FormControl.Label>{label}</FormControl.Label>
+      <Input
+        type="text"
+        autoCapitalize="none"
+        autoComplete="off"
+        autoCorrect={false}
+        onChangeText={setText}
+      />
       <FormControl.ErrorMessage>
         {error.length ? error : ''}
       </FormControl.ErrorMessage>
-      <Input type="text" onChangeText={(v) => callback.setValue(v)} />
     </FormControl>
   );
 };

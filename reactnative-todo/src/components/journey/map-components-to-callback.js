@@ -11,8 +11,8 @@ import React from 'react';
 import { KBA } from './kba';
 import { Password } from './password';
 import { TermsAndConditions } from './boolean';
-import { Username } from './username';
 import { TextField } from './text-field';
+import { Unknown } from './unknown';
 
 function mapCallbacksToComponents(cb, idx) {
   const name = cb?.payload?.input?.[0].name;
@@ -28,7 +28,6 @@ function mapCallbacksToComponents(cb, idx) {
       return <Choice callback={cb} key={name} />;
     case 'NameCallback':
     case 'ValidatedCreateUsernameCallback':
-      return <Username callback={cb} key={name} />;
     case 'StringAttributeInputCallback':
       return <TextField callback={cb} key={name} />;
     case 'PasswordCallback':
@@ -45,5 +44,7 @@ function mapCallbacksToComponents(cb, idx) {
       return <Unknown callback={cb} key={`unknown-${idx}`} />;
   }
 }
+
+
 
 export { mapCallbacksToComponents };

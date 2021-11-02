@@ -9,7 +9,17 @@
  */
 
 import { NativeModules } from 'react-native';
-import { API_URL } from 'react-native-dotenv';
+/*
+ * Please Ensure You Have Created A .env.js File
+ * Use the .env.example.js as a copy!
+ */
+import { API_URL } from '../../../.env';
+
+if (!API_URL) {
+  console.error('*************** MISSING API URL *************');
+  console.error('*************** CHECK .ENV.JS FILE IN ROOT *************');
+  throw new Error('MISSING ENV VARIABLES, SEE .env.js FILE');
+}
 
 const { FRAuthSampleBridge } = NativeModules;
 
@@ -26,6 +36,7 @@ async function request(method, resource = '', body = null) {
     const json = await FRAuthSampleBridge.getAccessToken();
     const tokens = JSON.parse(json);
     const { tokenType, value } = tokens;
+    // edit the url here in fetch with the url for your server
     const res = await fetch(`${API_URL}/todos/${resource}`, {
       method,
       body: body && JSON.stringify(body),
@@ -35,7 +46,7 @@ async function request(method, resource = '', body = null) {
       },
     });
     if (method === 'DELETE') return;
-
+    if (!res.ok) throw new Error(`Status ${res.status}: API request failed`);
     const response = await res.json();
 
     return response;

@@ -60,6 +60,7 @@ yarn-error.log
 
 # Environment variables
 .env
+.env.js
 
 # PouchDB db files
 */users
@@ -67,3 +68,9 @@ yarn-error.log
 
 # Security Certs
 *.pem
+*.crt
+*.csr
+*.key
+*.srl
+*.ext
+.env.mjs

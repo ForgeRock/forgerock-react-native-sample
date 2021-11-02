@@ -11,17 +11,18 @@
 import { Buffer } from 'buffer';
 import { readFileSync } from 'fs';
 import { fileURLToPath } from 'url';
+import * as constants from '../.env.js';
 
 const certsUrl = new URL('../', import.meta.url);
 const certsPath = fileURLToPath(certsUrl);
 
 export const AM_URL = (() => {
   try {
-    const lastChar = process.env.AM_URL.slice(-1);
+    const lastChar = constants.AM_URL.slice(-1);
     if (lastChar !== '/') {
-      return process.env.AM_URL + '/';
+      return constants.AM_URL + '/';
     }
-    return process.env.AM_URL;
+    return constants.AM_URL;
   } catch (err) {
     console.error('ERROR: Missing .env value. Ensure you have an .env file within the dir of this sample app.');
     return '';
@@ -29,18 +30,18 @@ export const AM_URL = (() => {
 })();
 
 export const CONFIDENTIAL_CLIENT = Buffer.from(
-  `${process.env.REST_OAUTH_CLIENT}:${process.env.REST_OAUTH_SECRET}`
+  `${constants.REST_OAUTH_CLIENT}:${constants.REST_OAUTH_SECRET}`
 ).toString('base64');
 
-export const PORT = process.env.PORT || 9443;
+export const PORT = constants.PORT || 9443;
 
-export const REALM_PATH = process.env.REALM_PATH;
+export const REALM_PATH = constants.REALM_PATH;
 
 export const SEC_KEY = (() => {
   try {
-    return process.env.SEC_KEY
-      ? process.env.SEC_KEY.replace(/\\n/gm, '\n')
-      : readFileSync(certsPath + process.env.SEC_KEY_FILE).toString('utf8');
+    return constants.SEC_KEY
+      ? constants.SEC_KEY.replace(/\\n/gm, '\n')
+      : readFileSync(certsPath + constants.SEC_KEY_FILE).toString('utf8');
   } catch (err) {
     console.error('ERROR: Missing .env value. Ensure you have an .env file within the dir of this sample app.');
     return '';
@@ -49,9 +50,9 @@ export const SEC_KEY = (() => {
 
 export const SEC_CERT = (() => {
   try {
-    return process.env.SEC_CERT
-      ? process.env.SEC_CERT.replace(/\\n/gm, '\n')
-      : readFileSync(certsPath + process.env.SEC_CERT_FILE).toString('utf8');
+    return constants.SEC_CERT
+      ? constants.SEC_CERT.replace(/\\n/gm, '\n')
+      : readFileSync(certsPath + constants.SEC_CERT_FILE).toString('utf8');
   } catch (err) {
     console.error('ERROR: Missing .env value. Ensure you have an .env file within the dir of this sample app.');
     return '';

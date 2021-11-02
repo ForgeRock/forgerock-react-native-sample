@@ -11,13 +11,13 @@
 import cors from 'cors';
 import express from 'express';
 import cookieParser from 'cookie-parser';
+import * as constants from '../.env.js';
 import { createServer } from 'http';
 import { createServer as createSecureServer } from 'https';
 import { env } from 'process';
 
 import { AM_URL, PORT, SEC_CERT, SEC_KEY } from './constants.mjs';
 import routes from './routes.mjs';
-
 /**
  * Create and configure Express
  */
@@ -60,7 +60,7 @@ if (!AM_URL) {
     'Ensure you have a .env file with appropriate values and the proper security certificate and key.',
   );
   console.error('Please stop this process.');
-} else if (process.env.DEVELOPMENT) {
+} else if (constants.DEVELOPMENT) {
   /**
    * Ignore self-signed cert warning
    */

@@ -1,17 +1,18 @@
 /*
- * forgerock-reactnative-sample
+ * forgerock-react-native-sample
  *
- * text-field.js
+ * text.js
  *
  * Copyright (c) 2021 ForgeRock. All rights reserved.
  * This software may be modified and distributed under the terms
  * of the MIT license. See the LICENSE file for details.
  */
-import React from 'react';
 import { FormControl, Input } from 'native-base';
-import { handleFailedPolicies } from '../utilities/failed-policies';
+import React from 'react';
 
-const TextField = ({ callback }) => {
+import { handleFailedPolicies } from './utilities';
+
+export default function Text({ callback }) {
   /********************************************************************
    * JAVASCRIPT SDK INTEGRATION POINT
    * Summary: Utilize Callback methods
@@ -31,17 +32,16 @@ const TextField = ({ callback }) => {
     <FormControl isRequired={isRequired} isInvalid={error}>
       <FormControl.Label>{label}</FormControl.Label>
       <Input
-        type="text"
         autoCapitalize="none"
         autoComplete="off"
         autoCorrect={false}
         onChangeText={setText}
+        size="lg"
+        type="text"
       />
       <FormControl.ErrorMessage>
         {error.length ? error : ''}
       </FormControl.ErrorMessage>
     </FormControl>
   );
-};
-
-export { TextField };
+}

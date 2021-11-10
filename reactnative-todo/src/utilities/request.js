@@ -9,11 +9,12 @@
  */
 
 import { NativeModules } from 'react-native';
+
 /*
  * Please Ensure You Have Created A .env.js File
- * Use the .env.example.js as a copy!
+ * Use the .env.example.js as a template!
  */
-import { API_URL } from '../../../.env';
+import { API_URL } from '../../.env';
 
 if (!API_URL) {
   console.error('*************** MISSING API URL *************');
@@ -23,7 +24,7 @@ if (!API_URL) {
 
 const { FRAuthSampleBridge } = NativeModules;
 
-async function request(method, resource = '', body = null) {
+export default async function request(method, resource = '', body = null) {
   /*****************************************************************
    * NATIVE BRIDGE SDK INTEGRATION POINT
    * Summary: Checking for access token to make request
@@ -55,5 +56,3 @@ async function request(method, resource = '', body = null) {
     FRAuthSampleBridge.logout();
   }
 }
-
-export { request };

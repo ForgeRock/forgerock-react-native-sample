@@ -7,15 +7,16 @@
  * This software may be modified and distributed under the terms
  * of the MIT license. See the LICENSE file for details.
  */
+import { FRStep } from '@forgerock/javascript-sdk';
 import { useContext, useEffect, useState } from 'react';
 import { NativeModules } from 'react-native';
-import { FRStep } from '@forgerock/javascript-sdk';
-import { useNavigation } from '@react-navigation/native';
-import { AppContext } from '../global-state';
+
+import { AppContext } from './global-state';
 
 const { FRAuthSampleBridge } = NativeModules;
+
 /**
- *
+ *  @function useJourneyHandler
  *  @param {Object} { action: { type : 'login' | 'register' } }
  *  @returns {Object} - {
  *    formFailureMessage: string,
@@ -25,7 +26,7 @@ const { FRAuthSampleBridge } = NativeModules;
  *    setSubmittingForm: React Hook Setter,
  * };
  */
-function useJourneyHandler({ action }) {
+export default function useJourneyHandler({ action }) {
   /**
    * Compose the state used in this view.
    * First, we will use the global state methods found in the App Context.
@@ -42,11 +43,9 @@ function useJourneyHandler({ action }) {
   // Step to submit
   const [submissionStep, setSubmissionStep] = useState(null);
   // Processing submission
-  const [submittingForm, setSubmittingForm] = useState(false);
+  const [isProcessingForm, setProcessingForm] = useState(false);
   // User state
   const [_, setAuthentication] = useContext(AppContext);
-
-  const navigation = useNavigation();
 
   /**
    * Since we have API calls to AM, we need to handle these requests as side-effects.
@@ -86,7 +85,7 @@ function useJourneyHandler({ action }) {
             const step = new FRStep(next);
 
             setRenderStep(step);
-            setSubmittingForm(false);
+            setProcessingForm(false);
           } catch (err) {
             /** *********************************************************************
              * NATIVE BRIDGE SDK INTEGRATION POINT
@@ -98,8 +97,11 @@ function useJourneyHandler({ action }) {
 
             const token = await FRAuthSampleBridge.getAccessToken();
             if (token) {
+              /**
+               * Setting authentication to true results in a re-rendering of
+               * the navigation bar and of the correct screen.
+               */
               setAuthentication(true);
-              navigation.navigate('Home');
             }
           }
         } else {
@@ -127,7 +129,7 @@ function useJourneyHandler({ action }) {
           const step = new FRStep(next);
 
           setRenderStep(step);
-          setSubmittingForm(false);
+          setProcessingForm(false);
         }
       } else {
         /**
@@ -159,19 +161,24 @@ function useJourneyHandler({ action }) {
             /** *********************************************************************
              * Native Bridge SDK INTEGRATION POINT
              * ----------------------------------------------------------------------
-             * Details: This call is just to "prove" that we have successfully completed the oauth flow
-             * and gives us the ability to present user information to the screen. It is completely optional
+             * Details: This call is just to "prove" that we have successfully
+             * completed the oauth flow and gives us the ability to present user
+             * information to the screen. It is completely optional.
              * ********************************************************************* */
             await FRAuthSampleBridge.getUserInfo();
+
+            /**
+             * Setting authentication to true results in a re-rendering of
+             * the navigation bar and of the correct screen.
+             */
             setAuthentication(true);
-            navigation.navigate('Home');
           } else {
             /**
              * If we got here, then the form submission was both successful
              * and requires additional step rendering.
              */
             setRenderStep(nextStep);
-            setSubmittingForm(false);
+            setProcessingForm(false);
           }
         } catch (err) {
           /**
@@ -180,7 +187,7 @@ function useJourneyHandler({ action }) {
           setFormFailureMessage(err.message);
 
           // setRenderStep(newStep);
-          setSubmittingForm(false);
+          setProcessingForm(false);
           /**
            * Handle basic form error
            */
@@ -222,8 +229,10 @@ function useJourneyHandler({ action }) {
             }
 
             setRenderStep(newStep);
-            setSubmittingForm(false);
-          } catch (err) {}
+            setProcessingForm(false);
+          } catch (err2) {
+            console.error('Parsing received data for JS SDK failed.');
+          }
         }
       }
     }
@@ -233,15 +242,14 @@ function useJourneyHandler({ action }) {
      * submissionStep will initially be `null`, and that's intended.
      ****************************************************************** */
     getStep(submissionStep);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [action.type, submissionStep]);
 
   return {
     formFailureMessage,
     renderStep,
-    submittingForm,
+    isProcessingForm,
     setSubmissionStep,
-    setSubmittingForm,
+    setProcessingForm,
   };
 }
-
-export { useJourneyHandler };

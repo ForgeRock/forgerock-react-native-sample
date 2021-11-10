@@ -8,11 +8,12 @@
  * of the MIT license. See the LICENSE file for details.
  */
 
-import * as React from 'react';
 import { Button, Input, HStack } from 'native-base';
-import { request } from '../utilities/request';
+import * as React from 'react';
 
-function TodoInput({ dispatch }) {
+import request from '../../utilities/request';
+
+export default function TodoInput({ dispatch }) {
   const [text, onChangeText] = React.useState('');
 
   const addTodo = async (e) => {
@@ -35,14 +36,13 @@ function TodoInput({ dispatch }) {
       <Input
         flexGrow="1"
         onChangeText={onChangeText}
+        placeholder="What needs doing?"
+        size="lg"
         value={text}
-        placeholder="What needs doing"
       />
-      <Button ml={3} onPress={addTodo}>
+      <Button ml={3} onPress={addTodo} size="lg">
         Create
       </Button>
     </HStack>
   );
 }
-
-export { TodoInput };

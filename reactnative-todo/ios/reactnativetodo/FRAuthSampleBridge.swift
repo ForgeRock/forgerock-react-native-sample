@@ -15,15 +15,15 @@ import UIKit
 @objc(FRAuthSampleBridge)
 public class FRAuthSampleBridge: NSObject {
   var currentNode: Node?
-  
+
   @objc static func requiresMainQueueSetup() -> Bool {
     return false
   }
-  
+
   @objc func start(_ resolve: @escaping RCTPromiseResolveBlock, rejecter reject: @escaping RCTPromiseRejectBlock) {
     // Set log level according to your needs
     FRLog.setLogLevel([.all])
-    
+
     do {
       try FRAuth.start()
       DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
@@ -39,26 +39,24 @@ public class FRAuthSampleBridge: NSObject {
       reject("Error", "SDK Failed to initialize", error)
     }
   }
-  
-  @objc(login:rejecter:)
-  func loginWithoutUI(_ resolve: @escaping RCTPromiseResolveBlock, rejecter reject: @escaping RCTPromiseRejectBlock) {
+
+  @objc func login(_ resolve: @escaping RCTPromiseResolveBlock, rejecter reject: @escaping RCTPromiseRejectBlock) {
     FRUser.login { (user, node, error) in
       self.handleNode(user, node, error, resolve: resolve, rejecter: reject)
     }
   }
-  
-  @objc(register:rejecter:)
-  func registerWithoutUI(_ resolve: @escaping RCTPromiseResolveBlock, rejecter reject: @escaping RCTPromiseRejectBlock) {
+
+  @objc func register(_ resolve: @escaping RCTPromiseResolveBlock, rejecter reject: @escaping RCTPromiseRejectBlock) {
     FRUser.register { (user, node, error) in
       self.handleNode(user, node, error, resolve: resolve, rejecter: reject)
     }
   }
-  
+
   @objc(loginWithBrowser:rejecter:)
   func loginWithBrowser(_ resolve: @escaping RCTPromiseResolveBlock, rejecter reject: @escaping RCTPromiseRejectBlock) {
     DispatchQueue.main.async {
       let keyWindow = UIApplication.shared.windows.filter {$0.isKeyWindow}.first
-      
+
       if var topController = keyWindow?.rootViewController {
         while let presentedViewController = topController.presentedViewController {
           topController = presentedViewController
@@ -86,22 +84,21 @@ public class FRAuthSampleBridge: NSObject {
       }
     }
   }
-  
-  @objc(getDeviceInformation:rejecter:)
-  func getDeviceInformation(_ resolve: @escaping RCTPromiseResolveBlock, rejecter reject: @escaping RCTPromiseRejectBlock) {
+
+  @objc func getDeviceInformation(_ resolve: @escaping RCTPromiseResolveBlock, rejecter reject: @escaping RCTPromiseRejectBlock) {
     guard let _ = FRDevice.currentDevice else {
       // If SDK is not initialized, then don't perform
       FRLog.e("FRDevice.currentDevice does not exist - SDK not initialized")
       reject("error", "FRDevice.currentDevice does not exist - SDK not initialized", nil)
       return
     }
-    
+
     FRDeviceCollector.shared.collect { (result) in
       FRLog.i("\(result)")
       resolve([result])
     }
   }
-  
+
   @objc func next(_ response: String, resolve: @escaping RCTPromiseResolveBlock, rejecter reject: @escaping RCTPromiseRejectBlock) {
     let decoder = JSONDecoder()
     let jsonData = Data(response.utf8)
@@ -113,9 +110,9 @@ public class FRAuthSampleBridge: NSObject {
         print(String(describing: error))
         reject("Error", "UnkownError", error)
       }
-      
+
       let callbacksArray = responseObject?.callbacks ?? []
-      
+
       for (outerIndex, nodeCallback) in node.callbacks.enumerated() {
         if let thisCallback = nodeCallback as? KbaCreateCallback {
           for (innerIndex, rawCallback) in callbacksArray.enumerated() {
@@ -147,7 +144,7 @@ public class FRAuthSampleBridge: NSObject {
               default:
                 break
               }
-              
+
             }
           }
         }
@@ -159,7 +156,7 @@ public class FRAuthSampleBridge: NSObject {
           }
         }
       }
-      
+
       //Call node.next
       node.next(completion: { (user: FRUser?, node, error) in
         if let node = node {
@@ -181,26 +178,25 @@ public class FRAuthSampleBridge: NSObject {
           }
         }
       })
-      
+
     } else {
       reject("Error", "UnkownError", nil)
     }
   }
-  
+
   @objc func logout() {
     FRUser.currentUser?.logout()
   }
-  
-  @objc(getUserInfo:rejecter:)
-  func getUserInfo(_ resolve: @escaping RCTPromiseResolveBlock, rejecter reject: @escaping RCTPromiseRejectBlock) {
-    
+
+  @objc func getUserInfo(_ resolve: @escaping RCTPromiseResolveBlock, rejecter reject: @escaping RCTPromiseRejectBlock) {
+
     guard let user = FRUser.currentUser else {
       // If no currently authenticated user is found, log error
       FRLog.e("Invalid SDK State: FRUser is returning 'nil'.")
       reject("error", "Invalid SDK State: FRUser is returning 'nil'.", nil)
       return
     }
-    
+
     // If FRUser.currentUser exists, perform getUserInfo
     user.getUserInfo { (userInfo, error) in
       if let error = error {
@@ -217,17 +213,16 @@ public class FRAuthSampleBridge: NSObject {
       }
     }
   }
-  
-  @objc(getAccessToken:rejecter:)
-  func getAccessToken(_ resolve: @escaping RCTPromiseResolveBlock, rejecter reject: @escaping RCTPromiseRejectBlock) {
-    
+
+  @objc func getAccessToken(_ resolve: @escaping RCTPromiseResolveBlock, rejecter reject: @escaping RCTPromiseRejectBlock) {
+
     guard let user = FRUser.currentUser else {
       // If no currently authenticated user is found, log error
       FRLog.e("Invalid SDK State: FRUser is returning 'nil'.")
       reject("error", "Invalid SDK State: FRUser is returning 'nil'.", nil)
       return
     }
-    
+
     // If FRUser.currentUser exists, perform getAccessToken
     user.getAccessToken { user, error in
       if let error = error {
@@ -251,7 +246,7 @@ public class FRAuthSampleBridge: NSObject {
       }
     }
   }
-  
+
   private func handleNode(_ result: Any?, _ node: Node?, _ error: Error?, resolve: @escaping RCTPromiseResolveBlock, rejecter reject: @escaping RCTPromiseRejectBlock) {
     if let node = node {
       self.currentNode = node
@@ -273,9 +268,8 @@ public class FRAuthSampleBridge: NSObject {
 }
 
 public struct FRNode: Encodable {
-  
   var frCallbacks: [FRCallback]
-  
+
   var authId: String
   /// Unique UUID String value of initiated AuthService flow
   var authServiceId: String
@@ -287,11 +281,11 @@ public struct FRNode: Encodable {
   var pageDescription: String?
   //array of raw callbacks
   var callbacks: [[String: Any]]
-  
+
   private enum CodingKeys: String, CodingKey {
     case frCallbacks, authId, authServiceId, stage, pageHeader, pageDescription
   }
-  
+
   init(node: Node) {
     authId = node.authId
     authServiceId = node.authServiceId
@@ -305,7 +299,7 @@ public struct FRNode: Encodable {
       frCallbacks.append(FRCallback(callback: callback))
     }
   }
-  
+
   //used for passing the Node object back to the ReactNative layer
   func resolve() throws -> String  {
     var response = [String: Any]()
@@ -327,29 +321,29 @@ public struct FRCallback: Encodable {
   var inputNames: [String]?
   var policies: RawPolicies?
   var failedPolicies: [RawFailedPolicies]?
-  
+
   /// Raw JSON response of Callback
   var response: String
-  
+
   init(callback: Callback) {
     self.type = callback.type
-    
+
     if let thisCallback = callback as? SingleValueCallback {
       self.prompt = thisCallback.prompt
       self.inputNames = [thisCallback.inputName!]
     }
-    
+
     if let thisCallback = callback as? KbaCreateCallback {
       self.prompt = thisCallback.prompt
       self.predefinedQuestions = thisCallback.predefinedQuestions
       self.inputNames = thisCallback.inputNames
     }
-    
+
     if let thisCallback = callback as? ChoiceCallback {
       self.choices = thisCallback.choices
       self.inputNames = [thisCallback.inputName!]
     }
-    
+
     if let thisCallback = callback as? AbstractValidatedCallback {
       if let policyDictionary = thisCallback.policies, let policiesJSON = try? policyDictionary.toJson() {
         let jsonData = Data(policiesJSON.utf8)
@@ -384,7 +378,7 @@ public struct FRCallback: Encodable {
         }
       }
     }
-    
+
     if let jsonData = try? JSONSerialization.data(withJSONObject: callback.response, options: .prettyPrinted), let jsonString = String(data: jsonData, encoding: .utf8) {
       self.response = jsonString
     } else {
@@ -441,12 +435,12 @@ public enum ResponseType {
 public struct FlexibleType: Codable {
   let value: Any
   let originalType: ResponseType
-  
+
   init(_ value: String, originalType: ResponseType = .NotSet) {
     self.value = value
     self.originalType = originalType
   }
-  
+
   public init(from decoder: Decoder) throws {
     let container = try decoder.singleValueContainer()
     // attempt to decode from all JSON primitives
@@ -467,7 +461,7 @@ public struct FlexibleType: Codable {
       value = ""
     }
   }
-  
+
   public func encode(to encoder: Encoder) throws {
     var container = encoder.singleValueContainer()
     switch originalType {
@@ -485,12 +479,12 @@ public struct FlexibleType: Codable {
     default:
       try container.encode("")
     }
-    
+
   }
 }
 
 fileprivate extension Dictionary {
-  
+
   /// Convert Dictionary to JSON string
   /// - Throws: exception if dictionary cannot be converted to JSON data or when data cannot be converted to UTF8 string
   /// - Returns: JSON string
@@ -504,7 +498,7 @@ fileprivate extension Dictionary {
 }
 
 fileprivate extension Array {
-  
+
   /// Convert Array to JSON string
   /// - Throws: exception if Array cannot be converted to JSON data or when data cannot be converted to UTF8 string
   /// - Returns: JSON string

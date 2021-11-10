@@ -9,7 +9,8 @@
  */
 
 import { useEffect } from 'react';
-import { request } from '../components/utilities/request';
+
+import request from '../utilities/request';
 
 /**
  * @function useTodos - A custom React hook for fetching todos from API
@@ -17,7 +18,7 @@ import { request } from '../components/utilities/request';
  * @param {Function} setFetched - A function for setting the state of hasFetched
  * @returns {undefined} - this doesn't directly return anything, but calls dispatch to set data
  */
-export function useTodos(dispatch, setFetched) {
+export default function useTodos(dispatch, setFetched) {
   /**
    * Since we are making an API call, which is a side-effect,
    * we will wrap this in a useEffect, which will re-render the
@@ -39,5 +40,6 @@ export function useTodos(dispatch, setFetched) {
       }
     }
     getTodos();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 }

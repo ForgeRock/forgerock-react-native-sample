@@ -7,11 +7,11 @@
  * This software may be modified and distributed under the terms
  * of the MIT license. See the LICENSE file for details.
  */
-import React, { useState } from 'react';
 import { FormControl, Input, Select } from 'native-base';
+import React, { useState } from 'react';
 
-function KBA({ callback }) {
-  /******************************************************************** 
+export default function KBA({ callback }) {
+  /********************************************************************
    * JAVASCRIPT SDK INTEGRATION POINT
    * Summary: Utilize Callback methods
    * ------------------------------------------------------------------
@@ -34,17 +34,18 @@ function KBA({ callback }) {
       <FormControl.Label>{label}</FormControl.Label>
       <Select
         accessibilityLabel={label}
+        onValueChange={updateQuestion}
         placeholder={label}
         selectedValue={selectedQuestion}
-        onValueChange={updateQuestion}
       >
         {callback.getPredefinedQuestions().map((question) => (
           <Select.Item label={question} key={question} value={question} />
         ))}
       </Select>
-      <Input onChangeText={(itemValue) => callback.setAnswer(itemValue)} />
+      <Input
+        onChangeText={(itemValue) => callback.setAnswer(itemValue)}
+        size="lg"
+      />
     </FormControl>
   );
 }
-
-export { KBA };

@@ -1,4 +1,8 @@
 module.exports = {
+  extends: ['@react-native-community', 'plugin:prettier/recommended'],
   root: true,
-  extends: '@react-native-community',
+  rules: {
+    'no-unused-vars': [2, { varsIgnorePattern: '_' }],
+    'react/prop-types': 0,
+  },
 };

@@ -1,21 +1,24 @@
 /*
- * forgerock-reactnative-sample
+ * forgerock-react-native-sample
  *
- * map-components-to-callback.js
+ * mapper.js
  *
  * Copyright (c) 2021 ForgeRock. All rights reserved.
  * This software may be modified and distributed under the terms
  * of the MIT license. See the LICENSE file for details.
  */
 import React from 'react';
-import { KBA } from './kba';
-import { Password } from './password';
-import { TermsAndConditions } from './boolean';
-import { TextField } from './text-field';
-import { Unknown } from './unknown';
 
-function mapCallbacksToComponents(cb, idx) {
+import Choice from './choice';
+import KBA from './kba';
+import Password from './password';
+import TermsAndConditions from './boolean';
+import Text from './text';
+import Unknown from './unknown';
+
+export default function mapCallbacksToComponents(cb, idx) {
   const name = cb?.payload?.input?.[0].name;
+
   /** *********************************************************************
    * JAVASCRIPT SDK INTEGRATION POINT
    * Summary: SDK callback method for getting the callback type
@@ -29,7 +32,7 @@ function mapCallbacksToComponents(cb, idx) {
     case 'NameCallback':
     case 'ValidatedCreateUsernameCallback':
     case 'StringAttributeInputCallback':
-      return <TextField callback={cb} key={name} />;
+      return <Text callback={cb} key={name} />;
     case 'PasswordCallback':
     case 'ValidatedCreatePasswordCallback':
       return <Password callback={cb} key={name} />;
@@ -44,7 +47,3 @@ function mapCallbacksToComponents(cb, idx) {
       return <Unknown callback={cb} key={`unknown-${idx}`} />;
   }
 }
-
-
-
-export { mapCallbacksToComponents };

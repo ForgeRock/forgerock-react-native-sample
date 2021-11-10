@@ -9,6 +9,7 @@
  */
 import React, { useState } from 'react';
 import { NativeModules } from 'react-native';
+
 const { FRAuthSampleBridge } = NativeModules;
 
 /**

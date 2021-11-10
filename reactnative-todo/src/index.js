@@ -11,11 +11,16 @@
 import React, { useEffect } from 'react';
 import { NativeModules } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+
+import Theme from './theme/index';
+import { AppContext, useGlobalStateMgmt } from './hooks/global-state';
 import Navigation from './navigation';
 
 const { FRAuthSampleBridge } = NativeModules;
 
 export default function App() {
+  const stateMgmt = useGlobalStateMgmt({});
+
   useEffect(() => {
     /* *******************************************************************
      * NATIVE BRIDGE SDK INTEGRATION
@@ -34,9 +39,14 @@ export default function App() {
     }
     start();
   }, []);
+
   return (
-    <SafeAreaProvider>
-      <Navigation />
-    </SafeAreaProvider>
+    <Theme>
+      <AppContext.Provider value={stateMgmt}>
+        <SafeAreaProvider>
+          <Navigation />
+        </SafeAreaProvider>
+      </AppContext.Provider>
+    </Theme>
   );
 }

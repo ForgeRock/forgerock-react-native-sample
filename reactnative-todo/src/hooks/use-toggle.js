@@ -8,12 +8,10 @@
  * of the MIT license. See the LICENSE file for details.
  */
 
-import React, { useState, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 
-const useToggle = (initialState = false) => {
+export default function useToggle(initialState = false) {
   const [state, setState] = useState(initialState);
-  const toggle = useCallback(() => setState((state) => !state), []);
+  const toggle = useCallback(() => setState((bool) => !bool), []);
   return [state, toggle];
-};
-
-export { useToggle };
+}

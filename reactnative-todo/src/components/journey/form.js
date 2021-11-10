@@ -7,49 +7,75 @@
  * This software may be modified and distributed under the terms
  * of the MIT license. See the LICENSE file for details.
  */
+import {
+  Button,
+  Box,
+  FormControl,
+  ScrollView,
+  Spinner,
+  Text,
+} from 'native-base';
 import React from 'react';
-import { Button, Box, FormControl, ScrollView } from 'native-base';
-import { Header } from './header';
-import { Loading } from '../utilities/loading';
-import { useJourneyHandler } from '../../hooks/journey-hook';
-import { mapCallbacksToComponents } from '../journey/map-components-to-callback';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-function Form({ action }) {
+import Loading from '../utilities/loading';
+import useJourneyHandler from '../../hooks/journey-state';
+import mapCallbacksToComponents from '../journey/mapper';
+
+export default function Form({ action, bottomMessage, children }) {
+  /**
+   * Call custom hook to handle the state management and request
+   * orchestration for the iterative process between a client
+   * and the ForgeRock server.
+   */
   const {
     formFailureMessage,
     renderStep,
-    submittingForm,
+    isProcessingForm,
     setSubmissionStep,
-    setSubmittingForm,
+    setProcessingForm,
   } = useJourneyHandler({ action });
 
-  return submittingForm ? (
+  return !renderStep ? (
     <Loading message={'Checking your session'} />
   ) : (
     <ScrollView>
       <Box safeArea flex={1} p={2} w="90%" mx="auto">
-        <Header type={action.type} />
+        {children}
         <FormControl isInvalid={formFailureMessage}>
-          <FormControl.ErrorMessage>
+          <FormControl.ErrorMessage leftIcon={<Icon name="alert" size={18} />}>
             {formFailureMessage}
           </FormControl.ErrorMessage>
-          {renderStep
-            ? renderStep.callbacks.map((callback, idx) =>
-                mapCallbacksToComponents(callback, idx),
-              )
-            : []}
+          {
+            /**
+             * Map over the callbacks in renderStep and render the appropriate
+             * component for each one.
+             */
+            renderStep.callbacks.map(mapCallbacksToComponents)
+          }
           <Button
             onPress={() => {
-              setSubmittingForm(true);
+              setProcessingForm(true);
               setSubmissionStep(renderStep);
             }}
+            size="lg"
           >
-            {action.type === 'login' ? 'Login' : 'Register'}
+            {
+              /**
+               * Render a small spinner during submission calls
+               */
+              isProcessingForm ? (
+                <Spinner color="white" />
+              ) : (
+                <Text color="white" fontWeight="medium">
+                  {action.type === 'login' ? 'Login' : 'Register'}
+                </Text>
+              )
+            }
           </Button>
+          {bottomMessage}
         </FormControl>
       </Box>
     </ScrollView>
   );
 }
-
-export { Form };

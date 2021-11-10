@@ -1,5 +1,5 @@
 /*
- * forgerock-reactnative-sample
+ * forgerock-react-native-sample
  *
  * password.js
  *
@@ -7,8 +7,9 @@
  * This software may be modified and distributed under the terms
  * of the MIT license. See the LICENSE file for details.
  */
-import React from 'react';
-import { FormControl, Input } from 'native-base';
+import { Button, FormControl, Input } from 'native-base';
+import React, { useState } from 'react';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 function handlePasswordFailures(arr = []) {
   return arr.reduce((prev, curr) => {
@@ -16,7 +17,7 @@ function handlePasswordFailures(arr = []) {
     try {
       failureObj = JSON.parse(curr);
     } catch (err) {
-      console.log(`Parsing failure for ${passwordLabel}`);
+      console.log('Parsing failure for password');
     }
 
     switch (failureObj.policyRequirement) {
@@ -36,8 +37,11 @@ function handlePasswordFailures(arr = []) {
     return prev;
   }, '');
 }
-const Password = ({ callback }) => {
-  /******************************************************************** 
+export default function Password({ callback }) {
+  const [show, setShow] = useState(false);
+
+  const handleClick = () => setShow(!show);
+  /********************************************************************
    * JAVASCRIPT SDK INTEGRATION POINT
    * Summary: Utilize Callback methods
    * ------------------------------------------------------------------
@@ -56,10 +60,28 @@ const Password = ({ callback }) => {
   return (
     <FormControl isRequired={isRequired} isInvalid={error}>
       <FormControl.Label>{label}</FormControl.Label>
-      <Input type="password" onChangeText={setPassword} />
+      <Input
+        type={show ? 'text' : 'password'}
+        size="lg"
+        onChangeText={setPassword}
+        InputRightElement={
+          <Button
+            size="xs"
+            rounded="none"
+            w="1/6"
+            h="full"
+            backgroundColor="muted.200"
+            onPress={handleClick}
+          >
+            {show ? (
+              <Icon name="eye-off" size={18} />
+            ) : (
+              <Icon name="eye" size={18} />
+            )}
+          </Button>
+        }
+      />
       <FormControl.ErrorMessage>{error}</FormControl.ErrorMessage>
     </FormControl>
   );
-};
-
-export { Password };
+}

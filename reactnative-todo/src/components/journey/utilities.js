@@ -24,16 +24,16 @@ function handleFailedPolicies(failedPolicies = []) {
 
       switch (failureObj.policyRequirement) {
         case 'REQUIRED':
-          prev = `This field is required`;
+          prev = 'This field is required. ';
           break;
         case 'VALID_USERNAME':
-          prev = `Please choose a different username. `;
+          prev = 'Please choose a different username. ';
           break;
         case 'VALID_EMAIL_ADDRESS_FORMAT':
-          prev = `Please use a valid email address. `;
+          prev = 'Please use a valid email address. ';
           break;
         default:
-          prev = `Please check this value for correctness.`;
+          prev = 'Please check this value for correctness.';
       }
       return prev;
     }, '');

@@ -8,41 +8,50 @@
  * of the MIT license. See the LICENSE file for details.
  */
 
+import { Button, Input, Modal } from 'native-base';
 import React, { useState } from 'react';
-import { Text, Input, Button, Modal } from 'native-base';
 
-export const EditModal = (props) => {
-  const [showModal, setShowModal] = useState(false);
-  const [text, onChange] = useState('');
+export default function EditModal({ editTodo, setShowModal, showModal, todo }) {
+  const [text, onChange] = useState(todo.title);
+
   return (
     <React.Fragment>
-      <Text onPress={() => setShowModal(true)} fontSize="sm">
-        Edit
-      </Text>
-      <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
-        <Modal.Content maxWidth="400px">
+      <Modal
+        animationPreset="slide"
+        isOpen={showModal}
+        onClose={() => setShowModal(false)}
+      >
+        <Modal.Content
+          backgroundColor="white"
+          height="30%"
+          // eslint-disable-next-line react-native/no-inline-styles
+          style={{ marginBottom: 0, marginTop: 'auto' }}
+          width="100%"
+        >
           <Modal.CloseButton />
-          <Modal.Header>Edit Todo</Modal.Header>
-          <Modal.Body>
-            <Input onChangeText={onChange} value={text} />
+          <Modal.Header p={6}>Edit Todo</Modal.Header>
+          <Modal.Body backgroundColor="white" p={6}>
+            <Input size="lg" onChangeText={onChange} defaultValue={text} />
           </Modal.Body>
-          <Modal.Footer>
+          <Modal.Footer backgroundColor="white" p={6} mb={4}>
             <Button.Group space={2}>
               <Button
-                variant="ghost"
                 colorScheme="blueGray"
                 onPress={() => {
                   setShowModal(false);
                 }}
+                size="lg"
+                variant="ghost"
               >
                 Cancel
               </Button>
               <Button
                 onPress={async () => {
                   setShowModal(false);
-                  await props.editTodo({ ...props.todo, title: text });
+                  await editTodo({ ...todo, title: text });
                   onChange('');
                 }}
+                size="lg"
               >
                 Save
               </Button>
@@ -52,4 +61,4 @@ export const EditModal = (props) => {
       </Modal>
     </React.Fragment>
   );
-};
+}

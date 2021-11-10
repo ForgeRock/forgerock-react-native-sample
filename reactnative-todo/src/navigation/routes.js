@@ -8,132 +8,108 @@
  * of the MIT license. See the LICENSE file for details.
  */
 
-import React, { useContext, useEffect } from 'react';
-import { NativeModules } from 'react-native';
-import { Home, Login, Todos, Register } from '../screens';
-import { AppContext } from '../global-state';
-import { Loading } from '../components/utilities/loading';
-
+import React, { useEffect } from 'react';
+import { useNavigation } from '@react-navigation/native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
+import Home from '../screens/home';
+import Login from '../screens/login';
+import Logout from '../screens/logout';
+import Register from '../screens/register';
+import Todos from '../screens/todos';
+
 const Tab = createBottomTabNavigator();
-const { FRAuthSampleBridge } = NativeModules;
+const tabBarOptions = {
+  tabBarLabelStyle: {
+    fontSize: 14,
+  },
+  tabBarStyle: { height: 80, paddingTop: 4 },
+};
 
-function Logout() {
-  const [, setAuthentication] = useContext(AppContext);
-  useEffect(() => {
-    /** *********************************************************************
-     * NATIVE BRIDGE SDK INTEGRATION POINT
-     * Summary: Call Logout
-     * ----------------------------------------------------------------------
-     * Details: We can utilize the logout method to completely 
-     * revoke existing access artifacts on ForgeRock 
-     * ******************************************************************** */
-
-    async function logout() {
-      await FRAuthSampleBridge.logout();
-      setAuthentication(false);
-    }
-    logout();
-  }, []);
-
-  return <Loading />;
+export function UnauthenticatedRoutes() {
+  return (
+    <Tab.Navigator screenOptions={tabBarOptions}>
+      <Tab.Screen
+        component={Home}
+        name="Home"
+        options={{
+          tabBarLabel: 'Home',
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="home" color={color} size={size} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        component={Login}
+        name="Sign In"
+        options={{
+          tabBarLabel: 'Sign In',
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="key" color={color} size={size} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        component={Register}
+        name="Sign Up"
+        options={{
+          tabBarLabel: 'Sign Up',
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons
+              name="account-plus"
+              color={color}
+              size={size}
+            />
+          ),
+        }}
+      />
+    </Tab.Navigator>
+  );
 }
 
-const UnauthenticatedRoutes = () => (
-  <Tab.Navigator initialRoute="Home">
-    <Tab.Screen
-      name="Home"
-      component={Home}
-      options={{
-        tabBarLabel: 'Home',
-        tabBarLabelStyle: {
-          fontSize: 12,
-        },
-        tabBarIcon: ({ color, size }) => (
-          <MaterialCommunityIcons name="home" color={color} size={size} />
-        ),
-      }}
-    />
-    <Tab.Screen
-      name="Sign In"
-      component={Login}
-      options={{
-        tabBarLabel: 'Sign In',
-        tabBarLabelStyle: {
-          fontSize: 12,
-        },
-        tabBarIcon: ({ color, size }) => (
-          <MaterialCommunityIcons name="key" color={color} size={size} />
-        ),
-      }}
-    />
-    <Tab.Screen
-      name="Sign Up"
-      component={Register}
-      options={{
-        tabBarLabel: 'Sign Up',
-        tabBarLabelStyle: {
-          fontSize: 12,
-        },
-        tabBarIcon: ({ color, size }) => (
-          <MaterialCommunityIcons
-            name="account-plus"
-            color={color}
-            size={size}
-          />
-        ),
-      }}
-    />
-  </Tab.Navigator>
-);
+export function AuthenticatedRoutes() {
+  const navigation = useNavigation();
 
-const AuthenticatedRoutes = () => (
-  <Tab.Navigator initialRoute="Home">
-    <Tab.Screen
-      name="Home"
-      component={Home}
-      options={{
-        tabBarLabel: 'Home',
-        tabBarLabelStyle: {
-          fontSize: 12,
-        },
-        tabBarIcon: ({ color, size }) => (
-          <MaterialCommunityIcons name="home" color={color} size={size} />
-        ),
-      }}
-    />
-    <Tab.Screen
-      name="Todos"
-      component={Todos}
-      options={{
-        tabBarLabel: 'Todos',
-        tabBarLabelStyle: {
-          fontSize: 12,
-        },
-        tabBarIcon: ({ color, size }) => (
-          <MaterialCommunityIcons name="check-all" color={color} size={size} />
-        ),
-      }}
-    />
-    <Tab.Screen
-      name="Sign Out"
-      component={Logout}
-      options={{
-        tabBarLabel: 'Sign Out',
-        tabBarLabelStyle: {
-          fontSize: 12,
-        },
-        tabBarIcon: ({ color, size }) => (
-          <MaterialCommunityIcons name="logout" color={color} size={size} />
-        ),
-      }}
-    />
-  </Tab.Navigator>
-);
-
-export {
-  AuthenticatedRoutes as TodoRoutes,
-  UnauthenticatedRoutes as LoginRoutes,
-};
+  useEffect(() => {
+    navigation.navigate('Todos');
+  });
+  return (
+    <Tab.Navigator screenOptions={tabBarOptions}>
+      <Tab.Screen
+        component={Home}
+        name="Home"
+        options={{
+          tabBarLabel: 'Home',
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="home" color={color} size={size} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        component={Todos}
+        name="Todos"
+        options={{
+          tabBarLabel: 'Todos',
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons
+              name="check-all"
+              color={color}
+              size={size}
+            />
+          ),
+        }}
+      />
+      <Tab.Screen
+        component={Logout}
+        name="Sign Out"
+        options={{
+          tabBarLabel: 'Sign Out',
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="logout" color={color} size={size} />
+          ),
+        }}
+      />
+    </Tab.Navigator>
+  );
+}

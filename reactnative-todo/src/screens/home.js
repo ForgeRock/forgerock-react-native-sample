@@ -8,10 +8,10 @@
  * of the MIT license. See the LICENSE file for details.
  */
 
-import React from 'react';
 import { Box, Heading, ScrollView, Text } from 'native-base';
+import React from 'react';
 
-function Home() {
+export default function Home() {
   return (
     <ScrollView>
       <Box safeArea flex={1} p={2} w="90%" mx="auto">
@@ -32,8 +32,13 @@ function Home() {
           React Native layer along with a "light" use of the JavaScript SDK for
           better ergonomics.
         </Text>
+        <Box mt={5} borderTopWidth="1" borderColor="muted.300">
+          <Text mt={5}>
+            The React name and logomark are properties of Facebook, and their
+            use herein is for learning and illustrative purposes only.
+          </Text>
+        </Box>
       </Box>
     </ScrollView>
   );
 }
-export { Home };

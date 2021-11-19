@@ -7,10 +7,25 @@
  * This software may be modified and distributed under the terms
  * of the MIT license. See the LICENSE file for details.
  */
+
 import { FormControl, Input, Select } from 'native-base';
 import React, { useState } from 'react';
 
+/*
+ * Please ensure you have created an .env.js from the
+ * .env.example.js template!
+ */
+import { DEBUGGER_OFF } from '../../../.env';
+
+/**
+ * @function KBA - React component used for handling "knowledge based answers"
+ * @param {Object} props - React props object passed from parent
+ * @param {Object} props.callback - The callback object from AM
+ * @returns {Object} - React component object
+ */
 export default function KBA({ callback }) {
+  const [selectedQuestion, setAns] = useState('');
+
   /********************************************************************
    * JAVASCRIPT SDK INTEGRATION POINT
    * Summary: Utilize Callback methods
@@ -20,8 +35,7 @@ export default function KBA({ callback }) {
    *  Referencing these helper methods allows us to avoid managing the state
    *  in our own application and leverage the SDK to do so
    *  *************************************************************** */
-
-  const [selectedQuestion, setAns] = useState('');
+  if (!DEBUGGER_OFF) debugger;
   const updateQuestion = (question) => {
     setAns(question);
     callback.setQuestion(question);
@@ -31,7 +45,7 @@ export default function KBA({ callback }) {
 
   return (
     <FormControl isRequired={isRequired}>
-      <FormControl.Label>{label}</FormControl.Label>
+      <FormControl.Label mb={0}>{label}</FormControl.Label>
       <Select
         accessibilityLabel={label}
         onValueChange={updateQuestion}

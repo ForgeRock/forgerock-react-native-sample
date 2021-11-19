@@ -11,6 +11,12 @@
 import { FormControl, Select } from 'native-base';
 import React from 'react';
 
+/*
+ * Please ensure you have created an .env.js from the
+ * .env.example.js template!
+ */
+import { DEBUGGER_OFF } from '../../../.env';
+
 /**
  * @function Choice - React component used for displaying choices
  * @param {Object} props - React props object passed from parent
@@ -25,6 +31,7 @@ export default function Choice({ callback }) {
    * Details: Each callback is wrapped by the SDK to provide helper methods
    * for accessing values from the callbacks received from AM
    ************************************************************************* */
+  if (!DEBUGGER_OFF) debugger;
   const label = callback.getPrompt();
   const choiceOptions = callback.getChoices();
   const defaultChoice = callback.getDefaultChoice();
@@ -47,7 +54,7 @@ export default function Choice({ callback }) {
 
   return (
     <FormControl isRequired={isRequired}>
-      <FormControl.Label>{label}</FormControl.Label>
+      <FormControl.Label mb={0}>{label}</FormControl.Label>
       <Select
         accessibilityLabel={label}
         fontSize="lg"

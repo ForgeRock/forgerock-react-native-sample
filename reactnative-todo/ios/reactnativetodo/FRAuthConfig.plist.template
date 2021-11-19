@@ -1,12 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<!--
-   FRAuthConfig.plist
-   reactnativetodo
-
-   Created by Justin Lowery on 10/12/21.
-   Copyright (c) 2021 ___ORGANIZATIONNAME___. All rights reserved.
--->
 <plist version="1.0">
 <dict>
 	<key>forgerock_cookie_name</key>
@@ -32,8 +25,8 @@
 	<key>forgerock_keychain_access_group</key>
 	<string>org.reactjs.native.example.reactnativetodo</string>
 	<key>forgerock_auth_service_name</key>
-	<string>Login</string>
+	<string></string>
 	<key>forgerock_registration_service_name</key>
-	<string>Registration</string>
+	<string></string>
 </dict>
 </plist>

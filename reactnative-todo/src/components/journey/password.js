@@ -7,10 +7,22 @@
  * This software may be modified and distributed under the terms
  * of the MIT license. See the LICENSE file for details.
  */
+
 import { Button, FormControl, Input } from 'native-base';
 import React, { useState } from 'react';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
+/*
+ * Please ensure you have created an .env.js from the
+ * .env.example.js template!
+ */
+import { DEBUGGER_OFF } from '../../../.env';
+
+/**
+ * @function handlePasswordFailures - Function for managment of password failures
+ * @param {Array} arr - Array of policy failures for passwords
+ * @returns {string} - String to display to user
+ */
 function handlePasswordFailures(arr = []) {
   return arr.reduce((prev, curr) => {
     let failureObj;
@@ -37,6 +49,13 @@ function handlePasswordFailures(arr = []) {
     return prev;
   }, '');
 }
+
+/**
+ * @function Password - React component used for displaying password input
+ * @param {Object} props - React props object passed from parent
+ * @param {Object} props.callback - The callback object from AM
+ * @returns {Object} - React component object
+ */
 export default function Password({ callback }) {
   const [show, setShow] = useState(false);
 
@@ -53,13 +72,15 @@ export default function Password({ callback }) {
    *  Note: Password is a little unique so we have to have some handling
    *  for Password that we don't have for other callbacks
    *  *************************************************************** */
+  if (!DEBUGGER_OFF) debugger;
   const label = callback.getPrompt();
   const setPassword = (text) => callback.setPassword(text);
   const error = handlePasswordFailures(callback?.getFailedPolicies());
   const isRequired = callback.isRequired ? callback.isRequired() : false;
+
   return (
     <FormControl isRequired={isRequired} isInvalid={error}>
-      <FormControl.Label>{label}</FormControl.Label>
+      <FormControl.Label mb={0}>{label}</FormControl.Label>
       <Input
         type={show ? 'text' : 'password'}
         size="lg"

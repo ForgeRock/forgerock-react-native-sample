@@ -38,7 +38,7 @@ export default function Login() {
       mb={4}
     >
       <Center>
-        <Icon name="key" size={72} color={'#c0c9d5'} />
+        <Icon name="key" size={72} color="#c0c9d5" />
         <Heading size="lg" mb={4}>
           Sign In
         </Heading>

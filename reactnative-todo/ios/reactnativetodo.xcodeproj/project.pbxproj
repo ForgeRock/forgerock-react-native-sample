@@ -20,9 +20,11 @@
 		5F9262EDA67D29550A56052E /* libPods-reactnativetodo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 33CBB50E146C92E26A9F2F8F /* libPods-reactnativetodo.a */; };
 		6711265EEC030BB674824A26 /* libPods-reactnativetodo-reactnativetodoTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4789B7CAFDC19B00DD6B34DD /* libPods-reactnativetodo-reactnativetodoTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		9A31DBF727484DDC007508C5 /* FRAuthSampleStructs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A31DBF627484DDC007508C5 /* FRAuthSampleStructs.swift */; };
+		9A31DBF927568772007508C5 /* FRAuthSampleHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A31DBF827568772007508C5 /* FRAuthSampleHelpers.swift */; };
 		9A4119D9271643FE006437AE /* libFRAuth.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A4119D8271643FE006437AE /* libFRAuth.a */; };
-		9A4119E227164806006437AE /* FRAuthConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9A4119E127164806006437AE /* FRAuthConfig.plist */; };
 		9A792748AE37468786E0BF99 /* OpenSans-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6A76370587A742A9990EF20C /* OpenSans-ExtraBold.ttf */; };
+		9AA5EFD62767F38000DA0FAD /* FRAuthConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9AA5EFD52767F38000DA0FAD /* FRAuthConfig.plist */; };
 		A4FD5EB3304346A9A52158FE /* OpenSans-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3527C54A1B204291874CF512 /* OpenSans-MediumItalic.ttf */; };
 		B7753BE7C9304684987ADCBF /* OpenSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B1195D1AD30545DAAB9491F2 /* OpenSans-Regular.ttf */; };
 		CD90078BB21D49DB9AF013C1 /* OpenSans-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CED6722D043B4655AA876073 /* OpenSans-BoldItalic.ttf */; };
@@ -78,9 +80,11 @@
 		8873A812F7344B67ACE93C29 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
 		91FB3ED83ED2B9DB0A186DC3 /* Pods-reactnativetodo-reactnativetodoTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-reactnativetodo-reactnativetodoTests.debug.xcconfig"; path = "Target Support Files/Pods-reactnativetodo-reactnativetodoTests/Pods-reactnativetodo-reactnativetodoTests.debug.xcconfig"; sourceTree = "<group>"; };
 		9340EE7F7BA54BA281C8141F /* OpenSans-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "OpenSans-Medium.ttf"; path = "../assets/fonts/OpenSans-Medium.ttf"; sourceTree = "<group>"; };
+		9A31DBF627484DDC007508C5 /* FRAuthSampleStructs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FRAuthSampleStructs.swift; path = reactnativetodo/FRAuthSampleStructs.swift; sourceTree = "<group>"; };
+		9A31DBF827568772007508C5 /* FRAuthSampleHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FRAuthSampleHelpers.swift; path = reactnativetodo/FRAuthSampleHelpers.swift; sourceTree = "<group>"; };
 		9A4119D8271643FE006437AE /* libFRAuth.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libFRAuth.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		9A4119DC271644D0006437AE /* reactnativetodo-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "reactnativetodo-Bridging-Header.h"; sourceTree = "<group>"; };
-		9A4119E127164806006437AE /* FRAuthConfig.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = FRAuthConfig.plist; path = reactnativetodo/FRAuthConfig.plist; sourceTree = "<group>"; };
+		9AA5EFD52767F38000DA0FAD /* FRAuthConfig.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = FRAuthConfig.plist; path = reactnativetodo/FRAuthConfig.plist; sourceTree = "<group>"; };
 		A08695FB2C7E436B9692021C /* OpenSans-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "OpenSans-SemiBold.ttf"; path = "../assets/fonts/OpenSans-SemiBold.ttf"; sourceTree = "<group>"; };
 		B1195D1AD30545DAAB9491F2 /* OpenSans-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "OpenSans-Regular.ttf"; path = "../assets/fonts/OpenSans-Regular.ttf"; sourceTree = "<group>"; };
 		BF3C19240C18496FAB419BDA /* OpenSans-SemiBoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "OpenSans-SemiBoldItalic.ttf"; path = "../assets/fonts/OpenSans-SemiBoldItalic.ttf"; sourceTree = "<group>"; };
@@ -137,9 +141,11 @@
 			isa = PBXGroup;
 			children = (
 				ECA3AFF82722DB070070CCA6 /* FRAuthSampleBridge.m */,
+				9A31DBF627484DDC007508C5 /* FRAuthSampleStructs.swift */,
+				9A31DBF827568772007508C5 /* FRAuthSampleHelpers.swift */,
 				ECA3AFF92722DB070070CCA6 /* FRAuthSampleBridge.swift */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
-				9A4119E127164806006437AE /* FRAuthConfig.plist */,
+				9AA5EFD52767F38000DA0FAD /* FRAuthConfig.plist */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
@@ -334,7 +340,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
-				9A4119E227164806006437AE /* FRAuthConfig.plist in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				545483555ADC470E9121B6F1 /* OpenSans-Bold.ttf in Resources */,
 				CD90078BB21D49DB9AF013C1 /* OpenSans-BoldItalic.ttf in Resources */,
@@ -347,6 +352,7 @@
 				A4FD5EB3304346A9A52158FE /* OpenSans-MediumItalic.ttf in Resources */,
 				B7753BE7C9304684987ADCBF /* OpenSans-Regular.ttf in Resources */,
 				D7DB30BB611546848DEA6F9C /* OpenSans-SemiBold.ttf in Resources */,
+				9AA5EFD62767F38000DA0FAD /* FRAuthConfig.plist in Resources */,
 				1C51B8E622464FD1AAAADAAB /* OpenSans-SemiBoldItalic.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -515,7 +521,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				ECA3AFFB2722DB070070CCA6 /* FRAuthSampleBridge.swift in Sources */,
+				9A31DBF927568772007508C5 /* FRAuthSampleHelpers.swift in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
+				9A31DBF727484DDC007508C5 /* FRAuthSampleStructs.swift in Sources */,
 				ECA3AFFA2722DB070070CCA6 /* FRAuthSampleBridge.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);

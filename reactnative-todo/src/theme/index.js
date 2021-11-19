@@ -11,6 +11,9 @@
 import React from 'react';
 import { NativeBaseProvider, extendTheme } from 'native-base';
 
+/**
+ * Customizing NativeBase's default theming
+ */
 export default function ({ children }) {
   const theme = extendTheme({
     colors: {

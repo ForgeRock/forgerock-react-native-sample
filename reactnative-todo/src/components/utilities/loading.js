@@ -14,7 +14,7 @@ import React from 'react';
 /**
  * @function Loading - Used to display a loading message
  * @param {Object} props - The object representing React's props
- * @param {string} props.message - The message string object passed from the parent component
+ * @param {string} props.message - The message string object passed from the parent
  * @returns {Object} - React component object
  */
 export default function Loading({ message }) {

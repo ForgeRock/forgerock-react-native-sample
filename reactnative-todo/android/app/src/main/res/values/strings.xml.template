@@ -1,7 +1,7 @@
 <resources>
-    <string name="app_name">reactnativetodo</string>
+    <string name="app_name">React Todo</string>
     <!-- OAuth 2.0 Client Details -->
-    <string name="forgerock_oauth_client_id" translatable="false">reactNativeClientAndroid</string>
+    <string name="forgerock_oauth_client_id" translatable="false"></string>
     <string name="forgerock_oauth_redirect_uri" translatable="false">org.forgerock.demo:/oauth2redirect</string>
     <string name="forgerock_oauth_scope" translatable="false">openid profile email</string>
     <integer name="forgerock_oauth_threshold" translatable="false">60</integer>
@@ -13,5 +13,5 @@
     <integer name="forgerock_timeout" translatable="false">60</integer>
 
     <!-- AM Tree Details -->
-    <string name="forgerock_auth_service" translatable="false">Login</string>
+    <string name="forgerock_auth_service" translatable="false"></string>
 </resources>

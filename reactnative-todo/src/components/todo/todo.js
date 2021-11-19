@@ -7,13 +7,23 @@
  * This software may be modified and distributed under the terms
  * of the MIT license. See the LICENSE file for details.
  */
+
 import { HStack, Menu, Text, Checkbox, Divider } from 'native-base';
 import React, { useState } from 'react';
 import { Pressable } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import EditModal from './edit-modal';
+import EditTodo from './edit-todo';
 
+/**
+ * @function Todo - Component for rendering todo item
+ * @param {Object} props - React props object
+ * @param {Function} props.editTodo - Function for handling label change
+ * @param {Function} props.handleStatusChange - Function for handling label change
+ * @param {Function} props.handleDelete - Function for handling deletion of todo
+ * @param {Object} props.todo - Todo object
+ * @returns {Object} - React object
+ */
 export default function Todo({
   editTodo,
   handleStatusChange,
@@ -21,6 +31,9 @@ export default function Todo({
   todo,
 }) {
   const [showModal, setShowModal] = useState(false);
+  let customCheckboxChecked = { position: 'absolute', color: '#166534' };
+  let customCheckboxUnchecked = { position: 'absolute', color: '#737373' };
+  let nativeBaseCheckbox = { opacity: 0 };
 
   return (
     <React.Fragment>
@@ -31,13 +44,35 @@ export default function Todo({
           isChecked={todo.completed}
           onChange={() => handleStatusChange(todo)}
           value={todo.title}
-          size="sm"
+          size="lg"
+          style={nativeBaseCheckbox}
         >
+          {
+            /**
+             * Since we are hiding the NativeBase icon from above, we are going to
+             * conditionally render a custom icon from Material Icons.
+             */
+            todo.completed ? (
+              <Icon
+                size={32}
+                name="checkbox-marked-circle-outline"
+                style={customCheckboxChecked}
+              />
+            ) : (
+              <Icon
+                size={32}
+                name="checkbox-blank-circle-outline"
+                style={customCheckboxUnchecked}
+              />
+            )
+          }
           <Text
             color={todo.completed ? 'muted.500' : 'darkText'}
             fontSize="lg"
             fontWeight="medium"
+            maxWidth="85%"
             ml={3}
+            mt={0.5}
             strikeThrough={todo.completed}
           >
             {todo.title}
@@ -60,7 +95,7 @@ export default function Todo({
           </Menu.Item>
         </Menu>
       </HStack>
-      <EditModal
+      <EditTodo
         editTodo={editTodo}
         setShowModal={setShowModal}
         showModal={showModal}

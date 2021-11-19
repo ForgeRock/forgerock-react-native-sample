@@ -9,12 +9,29 @@
  */
 
 import { Box, Heading, ScrollView, Text } from 'native-base';
-import React from 'react';
+import React, { useContext } from 'react';
+
+import Alert from '../components/utilities/alert.js';
+import { AppContext } from '../global-state';
 
 export default function Home() {
+  const [{ authenticated, email, name }] = useContext(AppContext);
+
   return (
     <ScrollView>
-      <Box safeArea flex={1} p={2} w="90%" mx="auto">
+      <Box safeArea flex={1} p={2} pt={0} w="90%" mx="auto">
+        {
+          /**
+           * If use is authenticated, render success message with name and email
+           */
+          authenticated ? (
+            <Alert
+              information={`You're currently logged in with the email ${email}`}
+              message={`Welcome back, ${name}.`}
+              type="success"
+            />
+          ) : null
+        }
         <Heading size="lg">Protect with ForgeRock;</Heading>
         <Heading size="lg">Develop with React Native</Heading>
         <Text fontSize="xl" fontWeight="bold" mt={6}>

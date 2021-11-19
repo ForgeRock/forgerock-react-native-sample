@@ -7,11 +7,23 @@
  * This software may be modified and distributed under the terms
  * of the MIT license. See the LICENSE file for details.
  */
+
 import { FormControl, Input } from 'native-base';
 import React from 'react';
 
+/*
+ * Please ensure you have created an .env.js from the
+ * .env.example.js template!
+ */
+import { DEBUGGER_OFF } from '../../../.env';
 import { handleFailedPolicies } from './utilities';
 
+/**
+ * @function Text - React component used for displaying regular text inputs
+ * @param {Object} props - React props object passed from parent
+ * @param {Object} props.callback - The callback object from AM
+ * @returns {Object} - React component object
+ */
 export default function Text({ callback }) {
   /********************************************************************
    * JAVASCRIPT SDK INTEGRATION POINT
@@ -22,6 +34,7 @@ export default function Text({ callback }) {
    *  Referencing these helper methods allows us to avoid managing the state
    *  in our own application and leverage the SDK to do so
    *  *************************************************************** */
+  if (!DEBUGGER_OFF) debugger;
   const error = handleFailedPolicies(
     callback.getFailedPolicies ? callback.getFailedPolicies() : [],
   );
@@ -30,7 +43,7 @@ export default function Text({ callback }) {
   const setText = (text) => callback.setInputValue(text);
   return (
     <FormControl isRequired={isRequired} isInvalid={error}>
-      <FormControl.Label>{label}</FormControl.Label>
+      <FormControl.Label mb={0}>{label}</FormControl.Label>
       <Input
         autoCapitalize="none"
         autoComplete="off"

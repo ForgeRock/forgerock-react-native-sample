@@ -12,7 +12,9 @@ import { FormControl } from 'native-base';
 import React from 'react';
 
 /**
- * @function Unknown- React component used for displaying Unknown callback
+ * @function Unknown - React component used for displaying unknown callbacks
+ * @param {Object} props - React props object passed from parent
+ * @param {Object} props.callback - The callback object from AM
  * @returns {Object} - React component object
  */
 export default function Unknown({ callback }) {

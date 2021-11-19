@@ -11,12 +11,12 @@
 import { NativeModules } from 'react-native';
 
 /*
- * Please Ensure You Have Created A .env.js File
- * Use the .env.example.js as a template!
+ * Please ensure you have created an .env.js from the
+ * .env.example.js template!
  */
-import { API_URL } from '../../.env';
+import { API_PORT, API_BASE_URL, DEBUGGER_OFF } from '../../.env';
 
-if (!API_URL) {
+if (!API_BASE_URL) {
   console.error('*************** MISSING API URL *************');
   console.error('*************** CHECK .ENV.JS FILE IN ROOT *************');
   throw new Error('MISSING ENV VARIABLES, SEE .env.js FILE');
@@ -24,21 +24,34 @@ if (!API_URL) {
 
 const { FRAuthSampleBridge } = NativeModules;
 
-export default async function request(method, resource = '', body = null) {
-  /*****************************************************************
-   * NATIVE BRIDGE SDK INTEGRATION POINT
-   * Summary: Checking for access token to make request
-   * ------------------------------------------------------------------
-   *  Details: Here we are checking for an existing access token in order to make
-   *  a request for a protected resource.
-   *  *************************************************************** */
-
+/**
+ * @function request - request utility method for calling protected APIs
+ * @param {string} method - GET, POST, PUT, DELETE
+ * @param {string} path - The path NOT including the origin or beginning slash
+ * @param {*} body - The object to POST to server
+ * @returns {*} - Object from response body
+ */
+export default async function request(method, path = '', body = null) {
   try {
+    /*****************************************************************
+     * NATIVE BRIDGE SDK INTEGRATION POINT
+     * Summary: Requesting access token to make protected request
+     * ------------------------------------------------------------------
+     * Details: Here we are checking for an existing access token in
+     * order to make a request for a protected resource.
+     *  *************************************************************** */
+    if (!DEBUGGER_OFF) debugger;
     const json = await FRAuthSampleBridge.getAccessToken();
     const tokens = JSON.parse(json);
     const { tokenType, value } = tokens;
-    // edit the url here in fetch with the url for your server
-    const res = await fetch(`${API_URL}/todos/${resource}`, {
+
+    const apiEndpoint = `${API_BASE_URL}${
+      API_PORT ? `:${API_PORT}` : ``
+    }/${path}`;
+
+    console.log(`${method} ${apiEndpoint}`);
+
+    const res = await fetch(apiEndpoint, {
       method,
       body: body && JSON.stringify(body),
       headers: {
@@ -46,13 +59,13 @@ export default async function request(method, resource = '', body = null) {
         authorization: `${tokenType} ${value}`,
       },
     });
+
     if (method === 'DELETE') return;
     if (!res.ok) throw new Error(`Status ${res.status}: API request failed`);
     const response = await res.json();
 
     return response;
   } catch (err) {
-    console.error('in request', err);
-    FRAuthSampleBridge.logout();
+    throw new Error('Error: API called failed.');
   }
 }

@@ -27,7 +27,98 @@ public class FRAuthSampleBridge: NSObject {
     return false
   }
 
-  /**
+  @objc func start(
+    _ resolve: @escaping RCTPromiseResolveBlock,
+    rejecter reject: @escaping RCTPromiseRejectBlock) {
+
+    /**
+     * Set log level according to  all
+     */
+    FRLog.setLogLevel([.all])
+
+    do {
+      try FRAuth.start()
+      let initMessage = "SDK is initialized"
+      FRLog.i(initMessage)
+      resolve(initMessage)
+    } catch {
+      FRLog.e(error.localizedDescription)
+      reject("Error", "SDK Failed to initialize", error)
+    }
+  }
+
+  @objc func login(
+    _ resolve: @escaping RCTPromiseResolveBlock,
+    rejecter reject: @escaping RCTPromiseRejectBlock) {
+
+    FRUser.login { (user, node, error) in
+      self.handleNode(user, node, error, resolve: resolve, rejecter: reject)
+    }
+  }
+
+  @objc func next(
+    _ response: String,
+    resolve: @escaping RCTPromiseResolveBlock,
+    rejecter reject: @escaping RCTPromiseRejectBlock) {
+
+    let decoder = JSONDecoder()
+    let jsonData = Data(response.utf8)
+    if let node = self.currentNode {
+      var responseObject: Response?
+      do {
+        responseObject = try decoder.decode(Response.self, from: jsonData)
+      } catch  {
+        FRLog.e(String(describing: error))
+        reject("Error", "UnknownError", error)
+      }
+
+      let callbacksArray = responseObject!.callbacks ?? []
+
+      for (outerIndex, nodeCallback) in node.callbacks.enumerated() {
+        if let thisCallback = nodeCallback as? SingleValueCallback {
+          for (innerIndex, rawCallback) in callbacksArray.enumerated() {
+            if let inputsArray = rawCallback.input, outerIndex == innerIndex,
+              let value = inputsArray.first?.value {
+
+              thisCallback.setValue(value.value as! String)
+            }
+          }
+        }
+      }
+
+      node.next(completion: { (user: FRUser?, node, error) in
+        if let node = node {
+          self.handleNode(user, node, error, resolve: resolve, rejecter: reject)
+        } else {
+          if let error = error {
+            FRLog.e(String(describing: error))
+            reject("Error", "LoginFailure", error)
+            return
+          }
+
+          let encoder = JSONEncoder()
+          encoder.outputFormatting = .prettyPrinted
+          if let user = user,
+            let token = user.token,
+            let data = try? encoder.encode(token),
+            let accessInfo = String(data: data, encoding: .utf8) {
+
+            resolve(["type": "LoginSuccess", "accessInfo": accessInfo])
+          } else {
+            resolve(["type": "LoginSuccess", "accessInfo": ""])
+          }
+        }
+      })
+    } else {
+      reject("Error", "UnknownError", nil)
+    }
+  }
+
+  @objc func logout() {
+    FRUser.currentUser?.logout()
+  }
+
+   /**
    * Method for calling the `getUserInfo` to retrieve the user information from the OIDC endpoint
    */
   @objc func getUserInfo(

@@ -11,32 +11,46 @@
 import React, { useEffect } from 'react';
 import { NativeModules } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import Navigation from './navigation';
+
+/*
+ * Please ensure you have created an .env.js from the
+ * .env.example.js template!
+ */
+import { DEBUGGER_OFF } from '../.env';
+import Theme from './theme/index';
+import { AppContext, useGlobalStateMgmt } from './global-state';
+import Router from './router';
 
 const { FRAuthSampleBridge } = NativeModules;
 
 export default function App() {
+  const stateMgmt = useGlobalStateMgmt({});
+
   useEffect(() => {
-    /* *******************************************************************
-     * NATIVE BRIDGE SDK INTEGRATION
-     * Summary: Call Start Early!
-     * -------------------------------------------------------------------
-     * Details: It's important to start the FR SDK at the root level!
-     * Start is needed to be called and resolved before
-     * any other Native methods can be used
-     *
-     * use `start` as early on as possible!
-     *
-     *
-     ********************************************************************/
     async function start() {
+      /* *******************************************************************
+       * NATIVE BRIDGE SDK INTEGRATION
+       * Summary: Call Start method to initialize SDK
+       * -------------------------------------------------------------------
+       * Details: It's important to start the FR SDK at the root level!
+       * Start is needed to be called and resolved before any other Native
+       * methods can be used.
+       *
+       * Important: Use `start` as early on as possible!
+       ********************************************************************/
+      if (!DEBUGGER_OFF) debugger;
       await FRAuthSampleBridge.start();
     }
     start();
   }, []);
+
   return (
-    <SafeAreaProvider>
-      <Navigation />
-    </SafeAreaProvider>
+    <Theme>
+      <AppContext.Provider value={stateMgmt}>
+        <SafeAreaProvider>
+          <Router />
+        </SafeAreaProvider>
+      </AppContext.Provider>
+    </Theme>
   );
 }

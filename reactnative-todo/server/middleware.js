@@ -1,7 +1,7 @@
 /*
  * forgerock-sample-web-react
  *
- * server.middleware.mjs
+ * middleware.mjs
  *
  * Copyright (c) 2021 ForgeRock. All rights reserved.
  * This software may be modified and distributed under the terms
@@ -14,9 +14,7 @@ import {
   AM_URL,
   CONFIDENTIAL_CLIENT,
   REALM_PATH,
-  SEC_KEY,
-  SEC_CERT,
-} from './constants.mjs';
+} from './constants.js';
 
 /**
  * @function auth - Auth middleware for checking the validity of user's auth
@@ -33,8 +31,6 @@ export async function auth(req, res, next) {
       const [_, token] = req.headers.authorization.split(' ');
       response = await request
         .post(`${AM_URL}oauth2/realms/root/realms/${REALM_PATH}/introspect`)
-        .key(SEC_KEY)
-        .cert(SEC_CERT)
         .set('Content-Type', 'application/json')
         .set('Authorization', `Basic ${CONFIDENTIAL_CLIENT}`)
         .query({ token });

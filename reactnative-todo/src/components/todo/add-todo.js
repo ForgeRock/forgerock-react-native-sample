@@ -1,25 +1,32 @@
 /*
  * forgerock-react-native-sample
  *
- * todo-input.js
+ * add-todo.js
  *
  * Copyright (c) 2021 ForgeRock. All rights reserved.
  * This software may be modified and distributed under the terms
  * of the MIT license. See the LICENSE file for details.
  */
 
-import * as React from 'react';
 import { Button, Input, HStack } from 'native-base';
-import { request } from '../utilities/request';
+import * as React from 'react';
 
-function TodoInput({ dispatch }) {
+import request from '../../utilities/request';
+
+/**
+ * @function AddTodo - Component for handling the add todo functionality
+ * @param {Object} props - React props object
+ * @param {Function} props.dispatch - Reducer function for managing todo state
+ * @returns {Object}
+ */
+export default function AddTodo({ dispatch }) {
   const [text, onChangeText] = React.useState('');
 
   const addTodo = async (e) => {
     e.preventDefault();
     const todo = { title: text };
     try {
-      const data = await request('POST', '', todo);
+      const data = await request('POST', 'todos', todo);
       dispatch({
         type: 'add-todo',
         payload: data,
@@ -35,14 +42,14 @@ function TodoInput({ dispatch }) {
       <Input
         flexGrow="1"
         onChangeText={onChangeText}
+        maxWidth="70%"
+        placeholder="What needs doing?"
+        size="lg"
         value={text}
-        placeholder="What needs doing"
       />
-      <Button ml={3} onPress={addTodo}>
+      <Button ml={3} onPress={addTodo} size="lg">
         Create
       </Button>
     </HStack>
   );
 }
-
-export { TodoInput };

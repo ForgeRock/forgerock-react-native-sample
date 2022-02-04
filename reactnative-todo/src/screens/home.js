@@ -8,13 +8,30 @@
  * of the MIT license. See the LICENSE file for details.
  */
 
-import React from 'react';
 import { Box, Heading, ScrollView, Text } from 'native-base';
+import React, { useContext } from 'react';
 
-function Home() {
+import Alert from '../components/utilities/alert.js';
+import { AppContext } from '../global-state';
+
+export default function Home() {
+  const [{ authenticated, email, name }] = useContext(AppContext);
+
   return (
     <ScrollView>
-      <Box safeArea flex={1} p={2} w="90%" mx="auto">
+      <Box safeArea flex={1} p={2} pt={0} w="90%" mx="auto">
+        {
+          /**
+           * If use is authenticated, render success message with name and email
+           */
+          authenticated ? (
+            <Alert
+              information={`You're currently logged in with the email ${email}`}
+              message={`Welcome back, ${name}.`}
+              type="success"
+            />
+          ) : null
+        }
         <Heading size="lg">Protect with ForgeRock;</Heading>
         <Heading size="lg">Develop with React Native</Heading>
         <Text fontSize="xl" fontWeight="bold" mt={6}>
@@ -32,8 +49,13 @@ function Home() {
           React Native layer along with a "light" use of the JavaScript SDK for
           better ergonomics.
         </Text>
+        <Box mt={5} borderTopWidth="1" borderColor="muted.300">
+          <Text mt={5}>
+            The React name and logomark are properties of Facebook, and their
+            use herein is for learning and illustrative purposes only.
+          </Text>
+        </Box>
       </Box>
     </ScrollView>
   );
 }
-export { Home };

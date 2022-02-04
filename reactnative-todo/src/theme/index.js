@@ -11,6 +11,9 @@
 import React from 'react';
 import { NativeBaseProvider, extendTheme } from 'native-base';
 
+/**
+ * Customizing NativeBase's default theming
+ */
 export default function ({ children }) {
   const theme = extendTheme({
     colors: {
@@ -121,6 +124,12 @@ export default function ({ children }) {
           sm: { fontWeight: 'medium' },
         },
       },
+      Input: {
+        baseStyle: {
+          placeholderTextColor: 'muted.500',
+          borderColor: 'muted.300',
+        },
+      },
       Text: {
         baseStyle: {
           fontSize: 'sm',
@@ -132,17 +141,33 @@ export default function ({ children }) {
           xs: { fontSize: 'xs', lineHeight: 7 },
         },
       },
+      FormControlErrorMessage: {
+        baseStyle: {
+          _text: {
+            fontSize: 'md',
+            fontWeight: 'medium',
+            color: 'white',
+          },
+          backgroundColor: 'danger.600',
+          rounded: 'sm',
+          marginBottom: 2,
+          padding: 2,
+        },
+      },
       FormControlLabel: {
         baseStyle: {
           _text: {
             fontWeight: 'bold',
             fontSize: 'sm',
           },
+          paddingBottom: 0,
         },
       },
       Select: {
         baseStyle: {
           mb: 2,
+          fontSize: 'md',
+          py: 2,
         },
       },
       FormControl: {

@@ -16,7 +16,7 @@
  * @param {Object} action.payload - The new state to be applied
  * @returns {Array} - the new array of update todos
  */
-export function reducer(state = [], action = { payload: [] }) {
+export default function reducer(state = [], action = { payload: [] }) {
   switch (action.type) {
     case 'init-todos':
       return action.payload;

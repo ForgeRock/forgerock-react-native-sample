@@ -53,7 +53,14 @@ static void InitializeFlipper(UIApplication *application) {
 - (NSURL *)sourceURLForBridge:(RCTBridge *)bridge
 {
 #if DEBUG
-  return [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
+  // Commenting out the default debugging map files as this causes a bug in app
+  // Bug ticket one: https://github.com/react-native-community/cli/issues/1081
+  // Bug ticket two: https://github.com/facebook/react-native/issues/28531
+  // return [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
+
+  // Using instructions from the below article to enable debugging from Safari:
+  // http://blog.nparashuram.com/2019/10/debugging-react-native-ios-apps-with.html
+  return [NSURL URLWithString:[[[[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil] absoluteString] stringByAppendingString:@"&inlineSourceMap=true" ]];
 #else
   return [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
 #endif

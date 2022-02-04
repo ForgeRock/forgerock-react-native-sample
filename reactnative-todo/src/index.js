@@ -11,32 +11,30 @@
 import React, { useEffect } from 'react';
 import { NativeModules } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import Navigation from './navigation';
+
+import Theme from './theme/index';
+import { AppContext, useGlobalStateMgmt } from './global-state';
+import Router from './router';
 
 const { FRAuthSampleBridge } = NativeModules;
 
 export default function App() {
+  const stateMgmt = useGlobalStateMgmt({});
+
   useEffect(() => {
-    /* *******************************************************************
-     * NATIVE BRIDGE SDK INTEGRATION
-     * Summary: Call Start Early!
-     * -------------------------------------------------------------------
-     * Details: It's important to start the FR SDK at the root level!
-     * Start is needed to be called and resolved before
-     * any other Native methods can be used
-     *
-     * use `start` as early on as possible!
-     *
-     *
-     ********************************************************************/
     async function start() {
       await FRAuthSampleBridge.start();
     }
     start();
   }, []);
+
   return (
-    <SafeAreaProvider>
-      <Navigation />
-    </SafeAreaProvider>
+    <Theme>
+      <AppContext.Provider value={stateMgmt}>
+        <SafeAreaProvider>
+          <Router />
+        </SafeAreaProvider>
+      </AppContext.Provider>
+    </Theme>
   );
 }

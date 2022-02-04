@@ -8,11 +8,41 @@
  * of the MIT license. See the LICENSE file for details.
  */
 
+import { Link } from '@react-navigation/native';
+import { Center, Heading, Text, useToken } from 'native-base';
 import React from 'react';
-import { Form } from '../components/journey/form';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-function Login() {
-  return <Form action={{ type: 'login' }} />;
+import Form from '../components/journey/form';
+
+export default function Login() {
+  const [primary] = useToken('colors', ['primary.600']);
+  const linkStyle = {
+    color: primary,
+    textDecorationLine: 'underline',
+  };
+
+  return (
+    <Form
+      action={{ type: 'login' }}
+      bottomMessage={
+        <Center>
+          <Text mt={2}>
+            {"Don't have an account?"}{' '}
+            <Link to={{ screen: 'Sign Up' }} style={linkStyle}>
+              Register
+            </Link>
+          </Text>
+        </Center>
+      }
+      mb={4}
+    >
+      <Center>
+        <Icon name="key" size={72} color="#c0c9d5" />
+        <Heading size="lg" mb={4}>
+          Sign In
+        </Heading>
+      </Center>
+    </Form>
+  );
 }
-
-export { Login };

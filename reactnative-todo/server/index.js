@@ -11,13 +11,11 @@
 import cors from 'cors';
 import express from 'express';
 import cookieParser from 'cookie-parser';
-import * as constants from '../.env.js';
 import { createServer } from 'http';
-import { createServer as createSecureServer } from 'https';
-import { env } from 'process';
 
-import { AM_URL, PORT, SEC_CERT, SEC_KEY } from './constants.mjs';
-import routes from './routes.mjs';
+import { AM_URL, PORT } from './constants.js';
+import routes from './routes.js';
+
 /**
  * Create and configure Express
  */
@@ -60,20 +58,12 @@ if (!AM_URL) {
     'Ensure you have a .env file with appropriate values and the proper security certificate and key.',
   );
   console.error('Please stop this process.');
-} else if (constants.DEVELOPMENT) {
-  /**
-   * Ignore self-signed cert warning
-   */
-  env['NODE_TLS_REJECT_UNAUTHORIZED'] = 0;
-
-  console.log('Creating secure server');
-  createSecureServer({ cert: SEC_CERT, key: SEC_KEY }, app).listen(PORT);
-
-  console.log(`Securely listening to port: ${PORT}. This should be a development server.`);
 } else {
   // Prod uses Nginx, so run regular server
-  console.log('Creating regular server');
+  console.log('Creating Node HTTP server');
   createServer(app).listen(PORT);
 
-  console.log(`INSECURELY listening to port: ${PORT}. This should NOT be directly taking traffic.`);
+  console.log(
+    `Node server listening on port: ${PORT}.`,
+  );
 }

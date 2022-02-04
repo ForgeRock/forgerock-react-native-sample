@@ -62,7 +62,6 @@ yarn-error.log
 .env
 .env.js
 .env.mjs
-FRAuthConfig.plist
 **/main/res/values/strings.xml
 
 # PouchDB db files

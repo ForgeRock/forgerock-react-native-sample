@@ -9,7 +9,7 @@
  */
 
 import { Box, Heading, ScrollView, Text } from 'native-base';
-import React, { useContext } from 'react';
+import { useContext } from 'react';
 
 import Alert from '../components/utilities/alert.js';
 import { AppContext } from '../global-state';

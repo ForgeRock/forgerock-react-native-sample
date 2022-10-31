@@ -9,7 +9,7 @@
  */
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import React, { useEffect, useState } from 'react';
+import { createContext, useEffect, useState } from 'react';
 import { NativeModules } from 'react-native';
 
 /*
@@ -142,4 +142,4 @@ export function useGlobalStateMgmt(props) {
  * This provides the capability to set a global state in React
  * without having to pass the state as props through parent-child components.
  */
-export const AppContext = React.createContext([{}, {}]);
+export const AppContext = createContext([{}, {}]);

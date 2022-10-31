@@ -8,8 +8,6 @@
  * of the MIT license. See the LICENSE file for details.
  */
 
-import React from 'react';
-
 import Choice from './choice';
 import KBA from './kba';
 import Password from './password';

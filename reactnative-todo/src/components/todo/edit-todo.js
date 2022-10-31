@@ -9,7 +9,7 @@
  */
 
 import { Button, Input, Modal } from 'native-base';
-import React, { useState } from 'react';
+import { Fragment, useState } from 'react';
 
 /**
  * @function EditTodo - Component for editing todo via modal
@@ -24,7 +24,7 @@ export default function EditModal({ editTodo, setShowModal, showModal, todo }) {
   const [text, onChange] = useState(todo.title);
 
   return (
-    <React.Fragment>
+    <Fragment>
       <Modal
         animationPreset="slide"
         isOpen={showModal}
@@ -68,6 +68,6 @@ export default function EditModal({ editTodo, setShowModal, showModal, todo }) {
           </Modal.Footer>
         </Modal.Content>
       </Modal>
-    </React.Fragment>
+    </Fragment>
   );
 }

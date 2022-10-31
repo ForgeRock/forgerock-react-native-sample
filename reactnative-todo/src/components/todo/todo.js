@@ -9,7 +9,7 @@
  */
 
 import { HStack, Menu, Text, Checkbox, Divider } from 'native-base';
-import React, { useState } from 'react';
+import { Fragment, useState } from 'react';
 import { Pressable } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -36,7 +36,7 @@ export default function Todo({
   let nativeBaseCheckbox = { opacity: 0 };
 
   return (
-    <React.Fragment>
+    <Fragment>
       <Divider my={4} />
       <HStack justifyContent="space-between">
         <Checkbox
@@ -101,6 +101,6 @@ export default function Todo({
         showModal={showModal}
         todo={todo}
       />
-    </React.Fragment>
+    </Fragment>
   );
 }

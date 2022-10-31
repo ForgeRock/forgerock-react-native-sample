@@ -9,7 +9,6 @@
  */
 
 import { Box, Spinner, Center, Heading, ScrollView } from 'native-base';
-import React from 'react';
 
 /**
  * @function Loading - Used to display a loading message

@@ -9,7 +9,6 @@
  */
 
 import { Button, Spinner, Text } from 'native-base';
-import React from 'react';
 
 /**
  * @function FormButton - Button for handling submit of journey form

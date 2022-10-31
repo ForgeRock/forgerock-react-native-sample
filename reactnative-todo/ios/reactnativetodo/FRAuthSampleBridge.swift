@@ -62,6 +62,7 @@ public class FRAuthSampleBridge: NSObject {
         /**
          * Check for FRAuth.shared. If it exists, the SDK is good to go. If not,
          */
+        
         if (FRAuth.shared != nil) {
           resolve("SDK initialized")
         } else {

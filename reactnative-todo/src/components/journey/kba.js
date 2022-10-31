@@ -9,7 +9,7 @@
  */
 
 import { FormControl, Input, Select } from 'native-base';
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 /*
  * Please ensure you have created an .env.js from the

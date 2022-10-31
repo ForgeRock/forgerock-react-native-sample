@@ -9,7 +9,6 @@
  */
 
 import { FormControl, Input } from 'native-base';
-import React from 'react';
 
 /*
  * Please ensure you have created an .env.js from the

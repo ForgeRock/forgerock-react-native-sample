@@ -15,7 +15,7 @@ import {
   Spinner,
   Text,
 } from 'native-base';
-import React, { useContext, useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import Alert from '../utilities/alert';

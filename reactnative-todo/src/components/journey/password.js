@@ -9,7 +9,7 @@
  */
 
 import { Button, FormControl, Input } from 'native-base';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 /*

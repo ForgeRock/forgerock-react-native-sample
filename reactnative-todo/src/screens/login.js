@@ -10,7 +10,6 @@
 
 import { Link } from '@react-navigation/native';
 import { Center, Heading, Text, useToken } from 'native-base';
-import React from 'react';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import Form from '../components/journey/form';

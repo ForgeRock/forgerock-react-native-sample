@@ -16,7 +16,7 @@ import {
   Modal,
   useToken,
 } from 'native-base';
-import React, { useState, Fragment } from 'react';
+import { useState, Fragment } from 'react';
 
 /*
  * Please ensure you have created an .env.js from the

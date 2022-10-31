@@ -9,7 +9,6 @@
  */
 
 import { FormControl } from 'native-base';
-import React from 'react';
 
 /**
  * @function Unknown - React component used for displaying unknown callbacks

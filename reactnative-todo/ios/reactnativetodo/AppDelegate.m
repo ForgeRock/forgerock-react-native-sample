@@ -60,7 +60,7 @@ static void InitializeFlipper(UIApplication *application) {
 
   // Using instructions from the below article to enable debugging from Safari:
   // http://blog.nparashuram.com/2019/10/debugging-react-native-ios-apps-with.html
-  return [NSURL URLWithString:[[[[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil] absoluteString] stringByAppendingString:@"&inlineSourceMap=true" ]];
+  return [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index"];
 #else
   return [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
 #endif
